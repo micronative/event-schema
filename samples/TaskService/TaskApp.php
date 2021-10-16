@@ -43,7 +43,7 @@ class TaskApp
         $message = $this->receiver->get();
         if (!empty($message)) {
             $obj = json_decode($message);
-            $taskEvent = new TaskEvent($obj->name, $obj->version, $obj->id, (array)$obj->payload);
+            $taskEvent = new TaskEvent($obj->name, isset($obj->version) ?? $obj->version , $obj->id, (array)$obj->payload);
             $this->consumer->process($taskEvent);
         }
     }
