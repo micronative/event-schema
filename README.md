@@ -25,7 +25,7 @@ event-schema was created as a tool to process messages from a broker or between 
 
 Run
 <pre>
-composer require micronative/event-schema:3.0.0
+composer require micronative/event-schema:1.0.0
 </pre>
 
 ## Sample code
