@@ -46,9 +46,9 @@ class SampleEventTest extends TestCase
         $this->assertEquals(1, $event->getId());
         $this->assertEquals(['name' => 'Ken'], $event->getPayload());
 
-        $event = new SampleEvent('Sample.Event', null,'111');
+        $event = new SampleEvent('Sample.Event', null, '111');
         $event->setVersion('1.0.0');
-        $this->assertSame( '111', $event->getId());
+        $this->assertSame('111', $event->getId());
         $this->assertSame('Sample.Event', $event->getName());
         $this->assertSame('1.0.0', $event->getVersion());
     }

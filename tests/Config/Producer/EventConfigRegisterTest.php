@@ -19,7 +19,13 @@ class EventConfigRegisterTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(dirname(__FILE__)));
-        $this->eventConfigRegister = new EventConfigRegister([$this->testDir . "/assets/producer/configs/events.json"]);
+        $this->eventConfigRegister = new EventConfigRegister(
+            $this->testDir,
+            [
+                "/assets/producer/configs/events.yml",
+                "/assets/producer/configs/events.json"
+            ]
+        );
     }
 
     /**
@@ -106,5 +112,9 @@ class EventConfigRegisterTest extends TestCase
         $events = [];
         $this->eventConfigRegister->setEventConfigs($events);
         $this->assertSame($events, $this->eventConfigRegister->getEventConfigs());
+
+        $assetDir = dirname(dirname(dirname(__FILE__)));
+        $this->eventConfigRegister->setAssetDir($assetDir);
+        $this->assertEquals($assetDir, $this->eventConfigRegister->getAssetDir());
     }
 }

@@ -8,6 +8,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class ServiceConfigRegister
 {
+    /** @var string|null */
+    protected $assetDir;
+
     /** @var string[] $configFiles */
     protected $configFiles = [];
 
@@ -18,12 +21,14 @@ class ServiceConfigRegister
     protected $aliasConfigs = [];
 
     /**
-     * ServiceRegister constructor.
+     * ServiceConfigRegister constructor.
      *
+     * @param string|null $assetDir
      * @param array|null $files
      */
-    public function __construct(array $files = null)
+    public function __construct(string $assetDir = null, array $files = null)
     {
+        $this->assetDir = $assetDir;
         $this->configFiles = $files;
     }
 
@@ -64,7 +69,7 @@ class ServiceConfigRegister
             return $this->serviceConfigs[$serviceClass];
         }
 
-        if(isset($this->aliasConfigs[$serviceClass])){
+        if (isset($this->aliasConfigs[$serviceClass])) {
             return $this->aliasConfigs[$serviceClass];
         }
 
@@ -80,7 +85,7 @@ class ServiceConfigRegister
         $serviceClass = $serviceConfig->getClass();
         $this->serviceConfigs[$serviceClass] = $serviceConfig;
 
-        if(!empty($serviceAlias = $serviceConfig->getAlias())){
+        if (!empty($serviceAlias = $serviceConfig->getAlias())) {
             $this->aliasConfigs[$serviceAlias] = $serviceConfig;
         }
 
@@ -93,6 +98,9 @@ class ServiceConfigRegister
      */
     private function loadServiceConfigFromJson(string $file = null)
     {
+        if (!empty($this->assetDir)) {
+            $file = $this->assetDir . $file;
+        }
         $services = JsonReader::decode(JsonReader::read($file), true);
         $this->loadFromArray($services);
     }
@@ -102,6 +110,9 @@ class ServiceConfigRegister
      */
     private function loadServiceConfigFromYaml(string $file = null)
     {
+        if (!empty($this->assetDir)) {
+            $file = $this->assetDir . $file;
+        }
         $services = Yaml::parseFile($file);
         $this->loadFromArray($services);
     }
@@ -120,6 +131,25 @@ class ServiceConfigRegister
                 $this->registerServiceConfig($serviceConfig);
             }
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAssetDir()
+    {
+        return $this->assetDir;
+    }
+
+    /**
+     * @param string|null $assetDir
+     * @return \Micronative\EventSchema\Config\Consumer\ServiceConfigRegister
+     */
+    public function setAssetDir(?string $assetDir): ServiceConfigRegister
+    {
+        $this->assetDir = $assetDir;
+
+        return $this;
     }
 
     /**

@@ -3,11 +3,11 @@
 namespace Micronative\EventSchema\Command;
 
 use Micronative\EventSchema\Event\AbstractEvent;
-use Micronative\EventSchema\Validators\EventValidator;
+use Micronative\EventSchema\Event\EventValidator;
 
 class EventValidateCommand implements CommandInterface
 {
-    /** @var \Micronative\EventSchema\Validators\EventValidator */
+    /** @var \Micronative\EventSchema\Event\EventValidator */
     private $eventValidator;
 
     /** @var \Micronative\EventSchema\Event\AbstractEvent */
@@ -18,7 +18,7 @@ class EventValidateCommand implements CommandInterface
 
     /**
      * EventValidateCommand constructor.
-     * @param \Micronative\EventSchema\Validators\EventValidator $validator
+     * @param \Micronative\EventSchema\Event\EventValidator $validator
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      * @param bool $applyDefaultValues
      */

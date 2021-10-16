@@ -24,13 +24,15 @@ class UserEvent extends AbstractEvent
     public function jsonSerialize()
     {
         return json_encode(
-            array_filter([
-                'name' => $this->name,
-                'version' => $this->version,
-                'id' => $this->id,
-                'payload' => $this->payload,
-                'created_at' => $this->createdAt->format('Y-m-d H:i:s')
-            ])
+            array_filter(
+                [
+                    'name' => $this->name,
+                    'version' => $this->version,
+                    'id' => $this->id,
+                    'payload' => $this->payload,
+                    'created_at' => $this->createdAt->format('Y-m-d H:i:s')
+                ]
+            )
         );
     }
 

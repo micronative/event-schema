@@ -45,7 +45,7 @@ class UserApp
         if ($this->userRepository->save($user)) {
             $userEvent = new UserEvent(UserRepository::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray());
 
-            if($this->producer->validate($userEvent, true)) {
+            if ($this->producer->validate($userEvent, true)) {
                 $this->publisher->publish($userEvent->jsonSerialize());
             }
         }
@@ -61,8 +61,8 @@ class UserApp
         if ($this->userRepository->update($user)) {
             $userEvent = new UserEvent(UserRepository::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray());
 
-            $userEvent->setSchemaFile('/assets/schemas/events/User.json');
-            if($this->producer->validate($userEvent, true)) {
+            $userEvent->setSchemaFile('/assets/schemas/User.Updated.schema.json');
+            if ($this->producer->validate($userEvent, true)) {
                 $this->publisher->publish($userEvent->jsonSerialize());
             }
         }

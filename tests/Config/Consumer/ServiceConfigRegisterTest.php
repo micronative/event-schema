@@ -20,7 +20,8 @@ class ServiceConfigRegisterTest extends TestCase
         parent::setUp();
         $this->testDir = dirname(dirname(dirname(__FILE__)));
         $this->serviceConfigRegister = new ServiceConfigRegister(
-            [$this->testDir . "/assets/consumer/configs/services.yml"]
+            $this->testDir,
+            ["/assets/consumer/configs/services.yml"]
         );
     }
 
@@ -126,5 +127,9 @@ class ServiceConfigRegisterTest extends TestCase
         $services = [];
         $this->serviceConfigRegister->setServiceConfigs($services);
         $this->assertEquals($services, $this->serviceConfigRegister->getServiceConfigs());
+
+        $assetDir = dirname(dirname(dirname(__FILE__)));
+        $this->serviceConfigRegister->setAssetDir($assetDir);
+        $this->assertEquals($assetDir, $this->serviceConfigRegister->getAssetDir());
     }
 }

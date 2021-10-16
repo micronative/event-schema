@@ -3,8 +3,9 @@
 namespace Tests\Command;
 
 use Micronative\EventSchema\Command\EventValidateCommand;
+use Micronative\EventSchema\Event\EventValidator;
+use Micronative\EventSchema\Event\ServiceValidator;
 use Micronative\EventSchema\Exceptions\ValidatorException;
-use Micronative\EventSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Service\Samples\CreateTask;
 use Tests\Service\Samples\SampleEvent;
@@ -14,7 +15,7 @@ class EventValidateCommandTest extends TestCase
     /** @coversDefaultClass \Micronative\EventSchema\Command\EventValidateCommand */
     private $command;
 
-    /** @var \Micronative\EventSchema\Validators\ServiceValidator */
+    /** @var \Micronative\EventSchema\Event\EventValidator */
     private $validator;
 
     /** @var \Micronative\EventSchema\Service\ServiceInterface */
@@ -27,7 +28,7 @@ class EventValidateCommandTest extends TestCase
     {
         parent::setUp();
         $testDir = dirname(dirname(__FILE__));
-        $this->validator = new ServiceValidator($testDir);
+        $this->validator = new EventValidator($testDir);
         $this->event = new SampleEvent('Test.Event.Name', 1, ['name' => 'Ken']);
         $this->service = new CreateTask();
     }

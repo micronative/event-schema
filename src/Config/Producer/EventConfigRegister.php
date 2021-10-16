@@ -33,7 +33,7 @@ class EventConfigRegister extends AbstractEventConfigRegister
         if (isset($this->eventConfigs[$eventName])) {
             /** @var \Micronative\EventSchema\Config\Producer\EventConfig $eventConfig */
             foreach ($this->eventConfigs[$eventName] as $eventConfig) {
-                if ($version ==  $eventConfig->getVersion()) {
+                if ($version == $eventConfig->getVersion()) {
                     return $eventConfig;
                 }
             }

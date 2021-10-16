@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Micronative\EventSchema\Exceptions;
 
 class ConsumerException extends ServiceSchemaException

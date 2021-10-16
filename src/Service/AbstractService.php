@@ -11,18 +11,18 @@ abstract class AbstractService implements ServiceInterface
 
     /**
      * @var string relative path (from Processor::schemaDir) to json schema file
-     * @see \Micronative\EventSchema\Consumer::schemaDir
+     * @see \Micronative\EventSchema\Consumer::assetDir
      */
     protected $schema;
 
     /** @var \Psr\Container\ContainerInterface */
     protected $container;
-    
+
     public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
-    
+
     /**
      * @return string
      */
@@ -30,7 +30,7 @@ abstract class AbstractService implements ServiceInterface
     {
         return $this->schema;
     }
-    
+
     /**
      * @param string|null $schema
      * @return \Micronative\EventSchema\Service\AbstractService
@@ -38,10 +38,10 @@ abstract class AbstractService implements ServiceInterface
     public function setSchema(string $schema = null)
     {
         $this->schema = $schema;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -49,7 +49,7 @@ abstract class AbstractService implements ServiceInterface
     {
         return $this->name;
     }
-    
+
     /**
      * @param string|null $name
      * @return \Micronative\EventSchema\Service\AbstractService
@@ -57,10 +57,10 @@ abstract class AbstractService implements ServiceInterface
     public function setName(string $name = null)
     {
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     /**
      * @return \Psr\Container\ContainerInterface
      */
@@ -68,7 +68,7 @@ abstract class AbstractService implements ServiceInterface
     {
         return $this->container;
     }
-    
+
     /**
      * @param \Psr\Container\ContainerInterface|null $container
      * @return AbstractService
@@ -76,7 +76,7 @@ abstract class AbstractService implements ServiceInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        
+
         return $this;
     }
 }

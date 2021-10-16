@@ -8,6 +8,9 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractEventConfigRegister
 {
+    /** @var string|null */
+    protected $assetDir;
+
     /** @var string[] $configFiles */
     protected $configFiles = [];
 
@@ -17,10 +20,12 @@ abstract class AbstractEventConfigRegister
     /**
      * AbstractEventRegister constructor.
      *
+     * @param string|null $assetDir
      * @param array|null $files
      */
-    public function __construct(array $files = null)
+    public function __construct(string $assetDir = null, array $files = null)
     {
+        $this->assetDir = $assetDir;
         $this->configFiles = $files;
     }
 
@@ -86,6 +91,9 @@ abstract class AbstractEventConfigRegister
      */
     protected function loadEventConfigFromJson(string $file = null)
     {
+        if (!empty($this->assetDir)) {
+            $file = $this->assetDir . $file;
+        }
         $events = JsonReader::decode(JsonReader::read($file), true);
         $this->loadFromArray($events);
     }
@@ -95,10 +103,31 @@ abstract class AbstractEventConfigRegister
      */
     protected function loadEventConfigFromYaml(string $file = null)
     {
+        if (!empty($this->assetDir)) {
+            $file = $this->assetDir . $file;
+        }
         $events = Yaml::parseFile($file);
         $this->loadFromArray($events);
     }
 
+    /**
+     * @return string|null
+     */
+    public function getAssetDir(): ?string
+    {
+        return $this->assetDir;
+    }
+
+    /**
+     * @param string|null $assetDir
+     * @return \Micronative\EventSchema\Config\AbstractEventConfigRegister
+     */
+    public function setAssetDir(?string $assetDir): AbstractEventConfigRegister
+    {
+        $this->assetDir = $assetDir;
+
+        return $this;
+    }
 
     /**
      * @return array

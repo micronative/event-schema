@@ -24,13 +24,15 @@ class TaskEvent extends AbstractEvent
     public function jsonSerialize()
     {
         return json_encode(
-            array_filter([
-                "name" => $this->name,
-                "version" => $this->version,
-                "id" => $this->id,
-                "payload" => $this->payload,
-                "received_at" => $this->receivedAt->format('Y-m-d H:i:s')
-            ])
+            array_filter(
+                [
+                    "name" => $this->name,
+                    "version" => $this->version,
+                    "id" => $this->id,
+                    "payload" => $this->payload,
+                    "received_at" => $this->receivedAt->format('Y-m-d H:i:s')
+                ]
+            )
         );
     }
 

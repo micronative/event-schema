@@ -19,5 +19,4 @@ class EventConfig extends AbstractEventConfig
         $this->schemaFile = $schemaFile;
     }
 
-
 }

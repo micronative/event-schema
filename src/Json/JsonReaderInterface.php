@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Micronative\EventSchema\Json;
-
 
 interface JsonReaderInterface
 {

@@ -1,0 +1,14 @@
+[
+  {
+    "event": "Invalid.Service.Class.Event",
+    "services": [
+      "InvalidService"
+    ]
+  },
+  {
+    "event": "Empty.Service.Event"
+  },
+  {
+    "No.event": "No.Event"
+  }
+]

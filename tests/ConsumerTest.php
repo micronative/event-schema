@@ -6,11 +6,11 @@ use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
 use Micronative\EventSchema\Consumer;
 use Micronative\EventSchema\Event\AbstractEvent;
+use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\ConsumerException;
 use Micronative\EventSchema\Exceptions\ValidatorException;
 use Micronative\EventSchema\Json\JsonReader;
 use Micronative\EventSchema\Service\ServiceFactory;
-use Micronative\EventSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Event\SampleEvent;
 
@@ -31,9 +31,9 @@ class ConsumerTest extends TestCase
         parent::setUp();
         $this->testDir = dirname(__FILE__);
         $this->consumer = new Consumer(
-            [$this->testDir . "/assets/consumer/configs/events.yml"],
-            [$this->testDir . "/assets/consumer/configs/services.yml"],
-            $this->testDir
+            $this->testDir,
+            ["/assets/consumer/configs/events.yml", "/assets/consumer/configs/events.json"],
+            ["/assets/consumer/configs/services.yml", "/assets/consumer/configs/services.json"],
         );
     }
 
@@ -46,7 +46,7 @@ class ConsumerTest extends TestCase
     public function testProcess()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent('User.Created', null, $data->id, (array)$data->payload);
         $result = $this->consumer->process($event);
@@ -62,7 +62,7 @@ class ConsumerTest extends TestCase
     public function testProcessWithReturn()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent('User.Created', null, $data->id, (array)$data->payload);
         $result = $this->consumer->process($event, null, true);
@@ -77,7 +77,7 @@ class ConsumerTest extends TestCase
     public function testProcessFailed()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.Failed.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.Failed.event.json")
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ValidatorException::class);
@@ -94,7 +94,7 @@ class ConsumerTest extends TestCase
     public function testProcessWithFilteredEvent()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $this->expectException(ConsumerException::class);
@@ -128,7 +128,7 @@ class ConsumerTest extends TestCase
     public function testProcessWithEmptyServiceEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
-        $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
+        $event = new SampleEvent('Empty.Service.Event', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ConsumerException::class);
         $this->expectExceptionMessage(
             sprintf(ConsumerException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
@@ -162,7 +162,7 @@ class ConsumerTest extends TestCase
         $data = JsonReader::decode(
             JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json")
         );
-        $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
+        $event = new SampleEvent('Invalid.Service.Class.Event', null, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->consumer->process($event));
     }
 
@@ -175,7 +175,7 @@ class ConsumerTest extends TestCase
     public function testRollback()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $result = $this->consumer->rollback($event);
@@ -190,7 +190,7 @@ class ConsumerTest extends TestCase
     public function testRollbackWithInvalidValidation()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.Failed.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.Failed.event.json")
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ValidatorException::class);
@@ -276,13 +276,13 @@ class ConsumerTest extends TestCase
         $this->consumer->setServiceFactory($serviceFactory);
         $this->assertSame($serviceFactory, $this->consumer->getServiceFactory());
 
-        $serviceValidator = new ServiceValidator();
-        $this->consumer->setValidator($serviceValidator);
-        $this->assertSame($serviceValidator, $this->consumer->getValidator());
+        $validator = new EventValidator();
+        $this->consumer->setEventValidator($validator);
+        $this->assertSame($validator, $this->consumer->getEventValidator());
 
         $schemaDir = "/app";
-        $this->consumer->setSchemaDir($schemaDir);
-        $this->assertEquals($schemaDir, $this->consumer->getSchemaDir());
+        $this->consumer->setAssetDir($schemaDir);
+        $this->assertEquals($schemaDir, $this->consumer->getAssetDir());
         $container = new SampleContainer();
         $this->consumer->setContainer($container);
         $this->assertEquals($container, $this->consumer->getContainer());

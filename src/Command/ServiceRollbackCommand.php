@@ -3,12 +3,12 @@
 namespace Micronative\EventSchema\Command;
 
 use Micronative\EventSchema\Event\AbstractEvent;
+use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Service\RollbackInterface;
-use Micronative\EventSchema\Validators\EventValidator;
 
 class ServiceRollbackCommand implements CommandInterface
 {
-    /** @var \Micronative\EventSchema\Validators\EventValidator */
+    /** @var \Micronative\EventSchema\Event\EventValidator */
     protected $validator;
 
     /** @var \Micronative\EventSchema\Service\RollbackInterface */
@@ -19,7 +19,7 @@ class ServiceRollbackCommand implements CommandInterface
 
     /**
      * RollbackCommand constructor.
-     * @param \Micronative\EventSchema\Validators\EventValidator $validator
+     * @param \Micronative\EventSchema\Event\EventValidator $validator
      * @param \Micronative\EventSchema\Service\RollbackInterface $service
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      */

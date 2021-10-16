@@ -19,7 +19,12 @@ class EventConfigRegisterTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(dirname(__FILE__)));
-        $this->eventConfigRegister = new EventConfigRegister([$this->testDir . "/assets/consumer/configs/events.yml"]);
+        $this->eventConfigRegister = new EventConfigRegister($this->testDir,
+                                                             [
+                                                                 "/assets/consumer/configs/events.yml",
+                                                                 "/assets/consumer/configs/events.json"
+                                                             ]
+        );
     }
 
     /**

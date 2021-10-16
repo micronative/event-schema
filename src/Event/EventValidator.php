@@ -1,10 +1,9 @@
 <?php
 
-namespace Micronative\EventSchema\Validators;
+namespace Micronative\EventSchema\Event;
 
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\Validator;
-use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Exceptions\ValidatorException;
 use Micronative\EventSchema\Json\JsonReader;
 
@@ -44,7 +43,7 @@ class EventValidator
             throw new ValidatorException(ValidatorException::INVALID_JSON);
         }
 
-        if(!empty($this->schemaDir)) {
+        if (!empty($this->schemaDir)) {
             $schemaFile = $this->schemaDir . $schemaFile;
         }
 
@@ -66,43 +65,5 @@ class EventValidator
         }
 
         return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSchemaDir(): string
-    {
-        return $this->schemaDir;
-    }
-
-    /**
-     * @param string $schemaDir
-     * @return \Micronative\EventSchema\Validators\EventValidator
-     */
-    public function setSchemaDir(string $schemaDir): EventValidator
-    {
-        $this->schemaDir = $schemaDir;
-
-        return $this;
-    }
-
-    /**
-     * @return \JsonSchema\Validator
-     */
-    public function getValidator(): Validator
-    {
-        return $this->validator;
-    }
-
-    /**
-     * @param \JsonSchema\Validator $validator
-     * @return \Micronative\EventSchema\Validators\EventValidator
-     */
-    public function setValidator(Validator $validator): EventValidator
-    {
-        $this->validator = $validator;
-
-        return $this;
     }
 }

@@ -1,18 +1,16 @@
 <?php
 
-namespace Tests\Validators;
+namespace Tests\Event;
 
 use JsonSchema\Validator;
+use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\JsonException;
 use Micronative\EventSchema\Exceptions\ValidatorException;
-use Micronative\EventSchema\Validators\EventValidator;
 use PHPUnit\Framework\TestCase;
-use Tests\Event\SampleEvent;
-use Tests\Event\SampleInvalidEvent;
 
 class EventValidatorTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\EventSchema\Validators\EventValidator */
+    /** @coversDefaultClass \Micronative\EventSchema\Event\EventValidator */
     protected $validator;
 
     /** @var string */
@@ -39,7 +37,7 @@ class EventValidatorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\EventSchema\Validators\EventValidator::validateEvent
+     * @covers \Micronative\EventSchema\Event\EventValidator::validateEvent
      */
     public function testValidateWithInvalidSchema()
     {
@@ -51,19 +49,19 @@ class EventValidatorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\EventSchema\Validators\EventValidator::validateEvent
+     * @covers \Micronative\EventSchema\Event\EventValidator::validateEvent
      */
     public function testValidateFailed()
     {
         $event = new SampleEvent("SomeName");
-        $event->setSchemaFile("/assets/producer/schemas/Task.json");
+        $event->setSchemaFile("/assets/producer/schemas/User.Created.schema.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches("%" . ValidatorException::INVALIDATED_EVENT . "%");
         $this->validator->validateEvent($event);
     }
 
     /**
-     * @covers \Micronative\EventSchema\Validators\EventValidator::validateEvent
+     * @covers \Micronative\EventSchema\Event\EventValidator::validateEvent
      */
     public function testValidateWithNoneExistingSchema()
     {
@@ -75,7 +73,7 @@ class EventValidatorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\EventSchema\Validators\EventValidator::validateEvent
+     * @covers \Micronative\EventSchema\Event\EventValidator::validateEvent
      */
     public function testValidateSuccessfulWithEmptySchema()
     {
@@ -86,13 +84,13 @@ class EventValidatorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\EventSchema\Validators\EventValidator::validateEvent
+     * @covers \Micronative\EventSchema\Event\EventValidator::validateEvent
      */
     public function testValidateSuccessful()
     {
         $event = new SampleEvent("SomeName");
         $event->setName('User.Created')->setPayload(["name" => "Ken"]);
-        $event->setSchemaFile("/assets/producer/schemas/Task.json");
+        $event->setSchemaFile("/assets/producer/schemas/User.Created.schema.json");
         $validated = $this->validator->validateEvent($event, true);
         $this->assertTrue($validated);
     }

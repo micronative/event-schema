@@ -22,8 +22,8 @@ class ProducerTest extends TestCase
         parent::setUp();
         $this->testDir = dirname(__FILE__);
         $this->producer = new Producer(
-            [$this->testDir . "/assets/producer/configs/events.yml"],
-            $this->testDir
+            $this->testDir,
+            ["/assets/producer/configs/events.yml"]
         );
     }
 
@@ -34,10 +34,24 @@ class ProducerTest extends TestCase
     public function testValidate()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
-        $event->setSchemaFile("/assets/producer/schemas/Task.json");
+        $event->setSchemaFile("/assets/producer/schemas/User.Created.schema.json");
+        $validated = $this->producer->validate($event, true);
+        $this->assertTrue($validated);
+    }
+
+    /**
+     * @throws \Micronative\EventSchema\Exceptions\JsonException
+     * @throws \Micronative\EventSchema\Exceptions\ValidatorException
+     */
+    public function testValidateEventWithNoSchema()
+    {
+        $data = JsonReader::decode(
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+        );
+        $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $validated = $this->producer->validate($event, true);
         $this->assertTrue($validated);
     }
@@ -49,10 +63,10 @@ class ProducerTest extends TestCase
     public function testValidateThrowsException()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
-        $event->setSchemaFile("/assets/producer/schemas/TaskMore.json");
+        $event->setSchemaFile("/assets/producer/schemas/Task.Created.schema.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
         $this->producer->validate($event, true);
@@ -61,7 +75,7 @@ class ProducerTest extends TestCase
     public function testSettersAndGetters()
     {
         $schemaDir = "/app";
-        $this->producer->setSchemaDir($schemaDir);
-        $this->assertEquals($schemaDir, $this->producer->getSchemaDir());
+        $this->producer->setAssetDir($schemaDir);
+        $this->assertEquals($schemaDir, $this->producer->getAssetDir());
     }
 }

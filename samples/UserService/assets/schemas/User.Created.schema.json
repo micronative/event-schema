@@ -6,15 +6,14 @@
       "minLength": 0,
       "maxLength": 256
     },
-    "id": {
-      "type": "string",
+    "version": {
+      "type": [
+        "string",
+        "null"
+      ],
       "minLength": 0,
-      "maxLength": 256
-    },
-    "created": {
-      "type": "string",
-      "minLength": 0,
-      "maxLength": 256
+      "maxLength": 256,
+      "default": "4.0.0"
     },
     "payload": {
       "type": "object",
@@ -23,15 +22,11 @@
           "type": "string",
           "minLength": 0,
           "maxLength": 256
-          },
+        },
         "email": {
           "type": "string",
           "minLength": 0,
           "maxLength": 256
-        },
-        "class": {
-          "type": "string",
-          "default": "\\App\\Entity\\User"
         }
       },
       "required": [
@@ -39,6 +34,10 @@
         "email"
       ],
       "additionalProperties": true
+    },
+    "published_by": {
+      "type": "string",
+      "default": "UserService"
     }
   },
   "required": [

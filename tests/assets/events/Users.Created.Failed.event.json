@@ -1,14 +1,9 @@
 {
-  "name": "Users.afterSaveCommit.Create",
+  "name": "Users.Created.Failed",
   "id": "65564e71-4876-48e7-885a-4c8a33970ab0",
   "time": "20190726032212",
   "status": "New",
   "payload": {
-    "user": {
-      "data": {
-        "name" : "Ken"
-      }
-    },
     "account": {
       "data": {
         "name": "Brighte"

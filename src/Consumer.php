@@ -8,12 +8,12 @@ use Micronative\EventSchema\Command\ServiceRollbackCommand;
 use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
 use Micronative\EventSchema\Event\AbstractEvent;
+use Micronative\EventSchema\Event\EventValidator;
+use Micronative\EventSchema\Event\ServiceValidator;
 use Micronative\EventSchema\Exceptions\ConsumerException;
 use Micronative\EventSchema\Service\RollbackInterface;
 use Micronative\EventSchema\Service\ServiceFactory;
 use Micronative\EventSchema\Service\ServiceInterface;
-use Micronative\EventSchema\Validators\EventValidator;
-use Micronative\EventSchema\Validators\ServiceValidator;
 use Psr\Container\ContainerInterface;
 
 class Consumer implements ConsumerInterface
@@ -27,37 +27,37 @@ class Consumer implements ConsumerInterface
     /** @var \Micronative\EventSchema\Service\ServiceFactory */
     protected $serviceFactory;
 
-    /** @var \Micronative\EventSchema\Validators\EventValidator */
-    protected $validator;
+    /** @var \Micronative\EventSchema\Event\EventValidator */
+    protected $eventValidator;
 
     /** @var \Psr\Container\ContainerInterface */
     protected $container;
 
     /** @var string|null */
-    protected $schemaDir;
+    protected $assetDir;
 
     /**
      * ServiceProvider constructor.
      *
      * @param array|null $eventConfigs
      * @param array|null $serviceConfigs
-     * @param string|null $schemaDir a relative dir from where the schemas are stored
+     * @param string|null $assetDir a relative dir from where the assets are stored
      * @param \Psr\Container\ContainerInterface|null $container
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      */
     public function __construct(
+        string $assetDir = null,
         array $eventConfigs = null,
         array $serviceConfigs = null,
-        string $schemaDir = null,
         ContainerInterface $container = null
     ) {
-        $this->eventConfigRegister = new EventConfigRegister($eventConfigs);
-        $this->serviceConfigRegister = new ServiceConfigRegister($serviceConfigs);
+        $this->assetDir = $assetDir;
+        $this->eventConfigRegister = new EventConfigRegister($this->assetDir, $eventConfigs);
+        $this->serviceConfigRegister = new ServiceConfigRegister($this->assetDir, $serviceConfigs);
+        $this->eventValidator = new EventValidator($this->assetDir, new Validator());
         $this->container = $container;
-        $this->schemaDir = $schemaDir;
         $this->serviceFactory = new ServiceFactory();
-        $this->validator = new EventValidator($this->schemaDir, new Validator());
         $this->loadConfigs();
     }
 
@@ -155,7 +155,9 @@ class Consumer implements ConsumerInterface
         /** @var \Micronative\EventSchema\Config\Consumer\EventConfig $eventConfig */
         $eventConfig = $this->eventConfigRegister->retrieveEventConfig($event->getName(), $event->getVersion());
         if (empty($eventConfig)) {
-            throw new ConsumerException(sprintf(ConsumerException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion()));
+            throw new ConsumerException(
+                sprintf(ConsumerException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
+            );
         }
 
         /**
@@ -163,7 +165,9 @@ class Consumer implements ConsumerInterface
          */
         $event->setSchemaFile($eventConfig->getSchemaFile());
         if (empty($serviceClasses = $eventConfig->getServiceClasses())) {
-            throw new ConsumerException(sprintf(ConsumerException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion()));
+            throw new ConsumerException(
+                sprintf(ConsumerException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
+            );
         }
 
         return $serviceClasses;
@@ -185,7 +189,7 @@ class Consumer implements ConsumerInterface
         array $callbacks = null,
         bool $return = false
     ) {
-        $consumeCommand = new ServiceConsumeCommand($this->validator, $service, $event);
+        $consumeCommand = new ServiceConsumeCommand($this->eventValidator, $service, $event);
         $result = $consumeCommand->execute();
         if ($return === true) {
             return $result;
@@ -207,7 +211,7 @@ class Consumer implements ConsumerInterface
      */
     private function rollbackService(AbstractEvent $event, RollbackInterface $service)
     {
-        $rollbackCommand = new ServiceRollbackCommand($this->validator, $service, $event);
+        $rollbackCommand = new ServiceRollbackCommand($this->eventValidator, $service, $event);
 
         return $rollbackCommand->execute();
     }
@@ -230,8 +234,8 @@ class Consumer implements ConsumerInterface
             if (empty($service = $this->serviceFactory->createService($serviceConfig, $this->container))) {
                 continue;
             }
-            
-            $consumeCommand = new ServiceConsumeCommand($this->validator, $service, $event);
+
+            $consumeCommand = new ServiceConsumeCommand($this->eventValidator, $service, $event);
             $consumeCommand->execute();
         }
 
@@ -296,20 +300,20 @@ class Consumer implements ConsumerInterface
     }
 
     /**
-     * @return \Micronative\EventSchema\Validators\ServiceValidator
+     * @return \Micronative\EventSchema\Event\EventValidator
      */
-    public function getValidator()
+    public function getEventValidator()
     {
-        return $this->validator;
+        return $this->eventValidator;
     }
 
     /**
-     * @param \Micronative\EventSchema\Validators\ServiceValidator|null $validator
+     * @param \Micronative\EventSchema\Event\EventValidator|null $eventValidator
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setValidator(ServiceValidator $validator = null)
+    public function setEventValidator(EventValidator $eventValidator = null)
     {
-        $this->validator = $validator;
+        $this->eventValidator = $eventValidator;
 
         return $this;
     }
@@ -336,18 +340,18 @@ class Consumer implements ConsumerInterface
     /**
      * @return string|null
      */
-    public function getSchemaDir(): ?string
+    public function getAssetDir(): ?string
     {
-        return $this->schemaDir;
+        return $this->assetDir;
     }
 
     /**
-     * @param string|null $schemaDir
+     * @param string|null $assetDir
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setSchemaDir(?string $schemaDir): Consumer
+    public function setAssetDir(?string $assetDir): Consumer
     {
-        $this->schemaDir = $schemaDir;
+        $this->assetDir = $assetDir;
 
         return $this;
     }

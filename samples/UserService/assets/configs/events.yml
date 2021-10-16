@@ -1,28 +1,13 @@
 - event: User.Created
   schema: /assets/schemas/User.Created.schema.json
-  services:
-    - CreateTaskForNewUser
-    - SendNotificationToNewUser
 - event: User.Created
   version: 1.0.0
   schema: /assets/schemas/User.Created.schema.json
-  services:
-    - CreateTaskForNewUser
-    - SendNotificationToNewUser
 - event: User.Created
   version: 2.0.0
   schema: /assets/schemas/User.Created.schema.json
-  services:
-    - CreateTaskForNewUser
-    - SendNotificationToNewUser
 - event: User.Updated
   schema: /assets/schemas/User.Updated.schema.json
-  services:
-    - CreateTaskForUpdatedUser
-    - SendNotificationToUpdatedUser
 - event: User.Updated
   version: [1.0.0, 2.0.0, 3.0.0]
   schema: /assets/schemas/User.Updated.schema.json
-  services:
-    - CreateTaskForUpdatedUser
-    - SendNotificationToUpdatedUser

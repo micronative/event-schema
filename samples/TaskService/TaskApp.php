@@ -26,9 +26,9 @@ class TaskApp
         $this->receiver = new MockReceiver($broker);
         $assetDir = dirname(__FILE__);
         $this->consumer = new Consumer(
-            [$assetDir . "/assets/configs/events.yml"],
-            [$assetDir . "/assets/configs/services.yml"],
-            $assetDir
+            $assetDir,
+            ["/assets/configs/events.yml"],
+            ["/assets/configs/services.yml"],
         );
     }
 

@@ -3,12 +3,12 @@
 namespace Micronative\EventSchema\Command;
 
 use Micronative\EventSchema\Event\AbstractEvent;
+use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Service\ServiceInterface;
-use Micronative\EventSchema\Validators\EventValidator;
 
 class ServiceConsumeCommand implements CommandInterface
 {
-    /** @var \Micronative\EventSchema\Validators\EventValidator */
+    /** @var \Micronative\EventSchema\Event\EventValidator */
     protected $eventValidator;
 
     /** @var \Micronative\EventSchema\Service\ServiceInterface */
@@ -19,7 +19,7 @@ class ServiceConsumeCommand implements CommandInterface
 
     /**
      * ConsumeCommand constructor.
-     * @param \Micronative\EventSchema\Validators\EventValidator $validator
+     * @param \Micronative\EventSchema\Event\EventValidator $validator
      * @param \Micronative\EventSchema\Service\ServiceInterface $service
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      */

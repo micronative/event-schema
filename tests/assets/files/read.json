@@ -5,7 +5,7 @@
   "payload": {
     "user": {
       "data": {
-        "name" : "Ken"
+        "name": "Ken"
       }
     },
     "account": {

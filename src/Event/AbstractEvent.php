@@ -20,7 +20,7 @@ abstract class AbstractEvent implements JsonSerializable
 
     /**
      * @var string relative path (from Processor::schemaDir) to json schema file
-     * @see \Micronative\EventSchema\Consumer::schemaDir
+     * @see \Micronative\EventSchema\Consumer::assetDir
      */
     protected $schemaFile;
 
