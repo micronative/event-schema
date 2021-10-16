@@ -1,4 +1,4 @@
-# Service Schema
+# Event-Schema
 [![Software license][ico-license]](README.md)
 [![Build status][ico-travis]][link-travis]
 [![Coverage][ico-codecov]][link-codecov]
@@ -11,7 +11,7 @@
 [link-codecov]: https://codecov.io/gh/micronative/event-schema
 [link-travis]: https://travis-ci.com/github/micronative/event-schema
 
-event-schema was is a tool to process messages from a broker or between microservices.
+Event-schema was is a tool to process messages from a broker or between microservices.
 
 ## Configuration
 <pre>
