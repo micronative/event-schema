@@ -1,0 +1,27 @@
+- event: User.Created
+  schema: /assets/consumer/schemas/CreateContact.json
+  services:
+    - CreateContact
+    - Tests\Service\Samples\CreateTask
+- event: User.Updated
+  schema: /assets/consumer/schemas/UpdateContact.json
+  services:
+    - UpdateContact
+- event: User.Updated
+  version: 1.0.0
+  schema: /assets/consumer/schemas/UpdateContact.json
+  services:
+    - UpdateContact
+- event: User.Updated
+  version: [2.0.0, 3.0.0]
+  schema: /assets/consumer/schemas/UpdateContact.json
+  services:
+    - UpdateContact
+- event: None.Existing.Service.Event
+  services:
+    - Tests\Service\Samples\NoneExistingService
+- event: Invalid.Service.Class.Event
+  services:
+    - InvalidService
+- event: Empty.Service.Event
+- No.event: No.Event

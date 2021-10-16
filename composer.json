@@ -1,0 +1,43 @@
+{
+  "name": "micronative/event-schema",
+  "description": "Event Schema for Microservice",
+  "keywords": [
+    "Microservice",
+    "Event",
+    "Service",
+    "Schema"
+  ],
+  "homepage": "https://github.com/micronative/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ken Ngo",
+      "email": "ngodinhloc@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.3||^8.0",
+    "justinrainbow/json-schema": "^5.2",
+    "psr/log": "1.0.2",
+    "psr/container": "1.0.0",
+    "ramsey/uuid": "3.9.3",
+    "symfony/yaml": "^5.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Micronative\\EventSchema\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/",
+      "Samples\\": "samples/"
+    }
+  },
+  "minimum-stability": "dev"
+}

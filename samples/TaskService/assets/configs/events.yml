@@ -1,0 +1,21 @@
+- event: User.Created
+  services:
+    - Samples\TaskService\Services\CreateTaskForNewUser
+    - Samples\TaskService\Services\SendNotificationToNewUser
+- event: User.Created
+  version: 1.0.0
+  services:
+    - Samples\TaskService\Services\CreateTaskForNewUser
+    - Samples\TaskService\Services\SendNotificationToNewUser
+- event: User.Created
+  version: 2.0.0
+  services:
+    - Samples\TaskService\Services\CreateTaskForNewUser
+    - Samples\TaskService\Services\SendNotificationToNewUser
+- event: User.Updated
+  services:
+    - Samples\TaskService\Services\SendNotificationToUpdatedUser
+- event: User.Updated
+  version: [1.0.0, 2.0.0, 3.0.0]
+  services:
+    - Samples\TaskService\Services\SendNotificationToUpdatedUser

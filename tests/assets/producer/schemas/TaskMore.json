@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "time": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object"
+            },
+            "class": {
+              "type": "string",
+              "default": "\\App\\Entity\\User"
+            }
+          }
+        },
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object"
+            },
+            "class": {
+              "type": "string",
+              "default": "\\App\\Entity\\Account"
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "name",
+    "payload",
+    "time"
+  ],
+  "additionalProperties": true
+}

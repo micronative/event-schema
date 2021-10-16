@@ -1,0 +1,24 @@
+- event: Users.Created
+  services:
+    - Tests\Service\Samples\CreateContact
+    - Tests\Service\Samples\CreateTask
+- event: Users.Updated
+  services:
+    - Tests\Service\Samples\UpdateContact
+- event: Users.Updated
+  version: 1.0.0
+  services:
+    - Tests\Service\Samples\UpdateContact
+- event: Users.Updated
+  version: [2.0.0, 3.0.0]
+  services:
+    - Tests\Service\Samples\UpdateContact
+- event: None.Existing.Service.Event
+  services:
+    - Tests\Service\Samples\NoneExistingService
+- event: Invalid.Service.Class.Event
+  services:
+    - Tests\Service\Samples\InvalidService
+- event: Empty.Service.Event
+- No.event: No.Event
+

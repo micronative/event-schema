@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "version": {
+      "type": ["string", "null"],
+      "minLength": 0,
+      "maxLength": 256,
+      "default" : "4.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        },
+        "email": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "name",
+        "email"
+      ],
+      "additionalProperties": true
+    },
+    "published_by": {
+      "type": "string",
+      "default" : "UserService"
+    }
+  },
+  "required": [
+    "name",
+    "payload"
+  ],
+  "additionalProperties": true
+}

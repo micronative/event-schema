@@ -1,0 +1,49 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "id": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "created": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        },
+        "email": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        },
+        "class": {
+          "type": "string",
+          "default": "\\App\\Entity\\User"
+        }
+      },
+      "required": [
+        "name",
+        "email"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "name",
+    "payload"
+  ],
+  "additionalProperties": true
+}
