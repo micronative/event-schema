@@ -1,13 +1,6 @@
 - event: User.Created
-  schema: /assets/schemas/User.Created.schema.json
-- event: User.Created
   version: 1.0.0
   schema: /assets/schemas/User.Created.schema.json
-- event: User.Created
+- event: User.Updated
   version: 2.0.0
-  schema: /assets/schemas/User.Created.schema.json
-- event: User.Updated
-  schema: /assets/schemas/User.Updated.schema.json
-- event: User.Updated
-  version: [1.0.0, 2.0.0, 3.0.0]
   schema: /assets/schemas/User.Updated.schema.json

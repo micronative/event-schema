@@ -13,7 +13,7 @@
       ],
       "minLength": 0,
       "maxLength": 256,
-      "default": "4.0.0"
+      "default": "1.0.0"
     },
     "payload": {
       "type": "object",

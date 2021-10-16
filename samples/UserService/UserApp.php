@@ -24,13 +24,15 @@ class UserApp
     /**
      * UserApp constructor.
      * @param \Samples\MessageBroker\MockBroker|null $broker
+     * @throws \Micronative\EventSchema\Exceptions\ConfigException
+     * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
     public function __construct(MockBroker $broker = null)
     {
         $this->publisher = new MockPublisher($broker);
         $this->userRepository = new UserRepository();
         $assetDir = dirname(__FILE__);
-        $this->producer = new Producer($assetDir);
+        $this->producer = new Producer($assetDir, ["/assets/configs/events.yml"]);
     }
 
     /**
@@ -46,7 +48,8 @@ class UserApp
             $userEvent = new UserEvent(UserRepository::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray());
 
             if ($this->producer->validate($userEvent, true)) {
-                $this->publisher->publish($userEvent->jsonSerialize());
+                $message = $userEvent->jsonSerialize();
+                $this->publisher->publish($message);
             }
         }
     }
