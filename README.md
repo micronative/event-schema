@@ -11,7 +11,7 @@
 [link-codecov]: https://codecov.io/gh/micronative/event-schema
 [link-travis]: https://travis-ci.com/github/micronative/event-schema
 
-event-schema was created as a tool to process messages from a broker or between microservices.
+event-schema was is a tool to process messages from a broker or between microservices.
 
 ## Configuration
 <pre>
@@ -33,7 +33,7 @@ The codes under [samples](./samples) is a mock microservice architecture:
 - a [MessageBroker](./samples/MessageBroker)
 - two microservices: [UserService](./samples/UserService) and [TaskService](./samples/TaskService)
 
-When a User created or updated on UserService, it will use ServiceSchema to validate the event then publish it to MessageBroker. TaskService is listening to these events and use ServiceSchema to process the incoming events
+When a User created or updated on UserService, it will use Micronative\EventSchema\Producer to validate the event then publish it to MessageBroker. TaskService is listening to these events and use Micronative\EventSchema\Consumer to process the incoming events
 ```php
 try {
     $broker = new MockBroker();
