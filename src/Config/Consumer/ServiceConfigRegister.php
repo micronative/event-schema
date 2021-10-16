@@ -123,8 +123,8 @@ class ServiceConfigRegister
     private function loadFromArray(array $services = null)
     {
         foreach ($services as $service) {
-            if (isset($service['class'])) {
-                $class = $service['class'];
+            if (isset($service['service'])) {
+                $class = $service['service'];
                 $alias = isset($service['alias']) ? $service['alias'] : null;
                 $callbacks = isset($service['callbacks']) ? $service['callbacks'] : null;
                 $serviceConfig = new ServiceConfig($class, $alias, $callbacks);

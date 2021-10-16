@@ -1,20 +1,20 @@
-- class: Tests\Service\Samples\CreateContact
+- service: Tests\Service\Samples\CreateContact
   alias: CreateContact
   callbacks:
     - PushMessageToSqs
     - PushMessageToLog
     - InvalidService
     - NoneExistingService
-- class: Tests\Service\Samples\UpdateContact
+- service: Tests\Service\Samples\UpdateContact
   alias: UpdateContact
   callbacks:
     - PushMessageToSqs
     - noneExistingService
-- class: Tests\Service\Samples\CreateTask
+- service: Tests\Service\Samples\CreateTask
   alias: CreateTask
-- class: Tests\Service\Samples\InvalidService
+- service: Tests\Service\Samples\InvalidService
   alias: InvalidService
-- class: Tests\Service\Samples\PushMessageToSqs
+- service: Tests\Service\Samples\PushMessageToSqs
   alias: PushMessageToSqs
-- class: Tests\Service\Samples\PushMessageToLog
+- service: Tests\Service\Samples\PushMessageToLog
   alias: PushMessageToLog

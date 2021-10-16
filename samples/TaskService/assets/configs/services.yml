@@ -1,21 +1,21 @@
-- class: Samples\TaskService\Services\CreateTaskForNewUser
+- service: Samples\TaskService\Services\CreateTaskForNewUser
   alias: CreateTaskForNewUser
   callbacks:
     - LogTask
-- class: Samples\TaskService\Services\SendNotificationToNewUser
+- service: Samples\TaskService\Services\SendNotificationToNewUser
   alias: SendNotificationToNewUser
   schema: /assets/schemas/services/SendNotifcation.json
   callbacks:
     - LogNotification
-- class: Samples\TaskService\Services\SendNotificationToUpdatedUser
+- service: Samples\TaskService\Services\SendNotificationToUpdatedUser
   alias: SendNotificationToUpdatedUser
   callbacks:
     - LogNotification
-- class: Samples\TaskService\Services\CreateTaskForUpdatedUser
+- service: Samples\TaskService\Services\CreateTaskForUpdatedUser
   alias: CreateTaskForUpdatedUser
   callbacks:
     - LogTask
-- class: Samples\TaskService\Services\LogTask
+- service: Samples\TaskService\Services\LogTask
   alias: LogTask
-- class: Samples\TaskService\Services\LogNotification
+- service: Samples\TaskService\Services\LogNotification
   alias: LogNotification

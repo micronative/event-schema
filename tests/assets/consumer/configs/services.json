@@ -1,10 +1,10 @@
 [
   {
-    "class": "Tests\\Service\\Samples\\PushMessageToSqs",
+    "service": "Tests\\Service\\Samples\\PushMessageToSqs",
     "alias": "pushMessageToSqs"
   },
   {
-    "class": "Tests\\Service\\Samples\\PushMessageToLog",
+    "service": "Tests\\Service\\Samples\\PushMessageToLog",
     "alias": "pushMessageToLog"
   }
 ]
