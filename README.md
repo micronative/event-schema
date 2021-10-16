@@ -11,7 +11,7 @@
 [link-codecov]: https://codecov.io/gh/micronative/event-schema
 [link-travis]: https://travis-ci.com/github/micronative/event-schema
 
-Event-schema was is a tool to process messages from a broker or between microservices.
+Event-schema is a tool to validate and process messages from a broker or between microservices.
 
 ## Configuration
 <pre>
