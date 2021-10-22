@@ -38,27 +38,32 @@ When a User created or updated on UserService, it will use Micronative\EventSche
 try {
     $broker = new MockBroker();
     $userApp = new UserApp($broker);
-    $taskApp = new TaskApp($broker);
-
-    $userApp->createUser('Ken', 'ken.ngo@gmail.com');
-    $taskApp->listen();
-}catch (Exception $e){
+    $userApp->createUser('Ken', 'ken@bc.com');
+} catch (Exception $e) {
     echo $e->getMessage();
 }
 ```
-@see: [create_user.php](./samples/create_user.php)
+@see: [create_user.php](samples/user_service_create_user.php)
 
 ```php
 try {
     $broker = new MockBroker();
     $userApp = new UserApp($broker);
-    $taskApp = new TaskApp($broker);
-
-    $user = new User('Ken', 'ken.ngo@gmail.com');
+    $user = new User('John', 'John@bc.com');
     $userApp->updateUser($user);
-    $taskApp->listen();
-}catch (Exception $e){
+} catch (Exception $e) {
     echo $e->getMessage();
 }
 ```
-@see: [update_user.php](./samples/update_user.php)
+@see: [create_user.php](samples/user_service_update_user.php)
+
+```php
+try {
+    $broker = new MockBroker();
+    $taskApp = new TaskApp($broker);
+    $taskApp->listen();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+```
+@see: [update_user.php](samples/task_service.php)
