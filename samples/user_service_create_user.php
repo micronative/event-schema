@@ -3,7 +3,6 @@
 require_once('./vendor/autoload.php');
 
 use Samples\MessageBroker\MockBroker;
-use Samples\UserService\Entities\User;
 use Samples\UserService\UserApp;
 
 try {
