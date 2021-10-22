@@ -43,7 +43,7 @@ try {
     echo $e->getMessage();
 }
 ```
-@see: [create_user.php](samples/user_service_create_user.php)
+@see: [user_service_create_user.php](samples/user_service_create_user.php)
 
 ```php
 try {
@@ -55,7 +55,7 @@ try {
     echo $e->getMessage();
 }
 ```
-@see: [create_user.php](samples/user_service_update_user.php)
+@see: [user_service_update_user.php](samples/user_service_update_user.php)
 
 ```php
 try {
@@ -66,4 +66,4 @@ try {
     echo $e->getMessage();
 }
 ```
-@see: [update_user.php](samples/task_service.php)
+@see: [task_service.php](samples/task_service.php)
