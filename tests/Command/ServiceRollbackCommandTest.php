@@ -11,7 +11,7 @@ use Tests\Service\Samples\SampleEvent;
 class ServiceRollbackCommandTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Command\ServiceRollbackCommand */
-    private $command;
+    private ServiceRollbackCommand $command;
 
     public function setUp(): void
     {

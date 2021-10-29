@@ -10,14 +10,9 @@ use Micronative\EventSchema\Event\EventValidator;
 
 class Producer implements ProducerInterface
 {
-    /** @var \Micronative\EventSchema\Config\Producer\EventConfigRegister */
-    protected $eventConfigRegister;
-
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    protected $eventValidator;
-
-    /** @var string|null */
-    protected $assetDir;
+    protected EventConfigRegister $eventConfigRegister;
+    protected EventValidator $eventValidator;
+    protected ?string $assetDir;
 
     /**
      * Producer constructor.
@@ -27,7 +22,7 @@ class Producer implements ProducerInterface
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public function __construct(string $assetDir = null, array $eventConfigs = null)
+    public function __construct(?string $assetDir = null, ?array $eventConfigs = null)
     {
         $this->assetDir = $assetDir;
         $this->eventConfigRegister = new EventConfigRegister($this->assetDir, $eventConfigs);
@@ -42,7 +37,7 @@ class Producer implements ProducerInterface
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function validate(AbstractEvent $event, bool $applyDefaultValues = false)
+    public function validate(AbstractEvent $event, ?bool $applyDefaultValues = false)
     {
         /**
          * If event has no schema then try with schema from config

@@ -6,23 +6,16 @@ use JsonSerializable;
 
 abstract class AbstractEvent implements JsonSerializable
 {
-    /** @var string */
-    protected $name;
-
-    /** @var string */
-    protected $version;
-
-    /** @var string|null */
-    protected $id;
-
-    /** @var array|null */
-    protected $payload;
+    protected string $name;
+    protected ?string $version = null;
+    protected ?string $id = null;
+    protected ?array $payload = null;
 
     /**
-     * @var string relative path (from Processor::schemaDir) to json schema file
+     * @var string|null relative path (from Processor::schemaDir) to json schema file
      * @see \Micronative\EventSchema\Consumer::assetDir
      */
-    protected $schemaFile;
+    protected ?string $schemaFile = null;
 
     /**
      * Get the json string representing the event
@@ -75,7 +68,7 @@ abstract class AbstractEvent implements JsonSerializable
      * @param string|null $id
      * @return \Micronative\EventSchema\Event\AbstractEvent
      */
-    public function setId(string $id = null)
+    public function setId(?string $id)
     {
         $this->id = $id;
 
@@ -85,16 +78,16 @@ abstract class AbstractEvent implements JsonSerializable
     /**
      * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string|null $name
+     * @param string $name
      * @return \Micronative\EventSchema\Event\AbstractEvent
      */
-    public function setName(string $name = null)
+    public function setName(string $name)
     {
         $this->name = $name;
 
@@ -104,7 +97,7 @@ abstract class AbstractEvent implements JsonSerializable
     /**
      * @return string|null
      */
-    public function getVersion()
+    public function getVersion(): ?string
     {
         return $this->version;
     }
@@ -123,7 +116,7 @@ abstract class AbstractEvent implements JsonSerializable
     /**
      * @return array|null
      */
-    public function getPayload()
+    public function getPayload(): ?array
     {
         return $this->payload;
     }
@@ -132,7 +125,7 @@ abstract class AbstractEvent implements JsonSerializable
      * @param array|null $payload
      * @return \Micronative\EventSchema\Event\AbstractEvent
      */
-    public function setPayload($payload = null)
+    public function setPayload(?array $payload = null)
     {
         $this->payload = $payload;
 

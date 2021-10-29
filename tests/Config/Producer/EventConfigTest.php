@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class EventConfigTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Config\Producer\EventConfig */
-    private $eventConfig;
+    private EventConfig $eventConfig;
 
     public function testSettersAndGetters()
     {

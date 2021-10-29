@@ -8,17 +8,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class ServiceConfigRegister
 {
-    /** @var string|null */
-    protected $assetDir;
-
-    /** @var string[] $configFiles */
-    protected $configFiles = [];
+    protected ?string $assetDir;
+    protected ?array $configFiles = [];
 
     /** @var \Micronative\EventSchema\Config\Consumer\ServiceConfig[] $serviceConfigs */
-    protected $serviceConfigs = [];
+    protected array $serviceConfigs = [];
 
     /** @var \Micronative\EventSchema\Config\Consumer\ServiceConfig[] $aliasConfigs */
-    protected $aliasConfigs = [];
+    protected array $aliasConfigs = [];
 
     /**
      * ServiceConfigRegister constructor.

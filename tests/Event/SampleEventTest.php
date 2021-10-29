@@ -22,9 +22,9 @@ class SampleEventTest extends TestCase
         $event = new SampleEvent("SomeName");
         $event->setId('1')
             ->setName("Test.Event.Name")
-            ->setPayload((object)["name" => "Ken"]);
+            ->setPayload(["name" => "Ken"]);
         $this->assertSame($event->getId(), '1');
-        $this->assertEquals((object)["name" => "Ken"], $event->getPayload());
+        $this->assertEquals(["name" => "Ken"], $event->getPayload());
 
         $json = $event->jsonSerialize();
         $this->assertTrue(is_string($json));

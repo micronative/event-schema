@@ -17,10 +17,8 @@ use Tests\Event\SampleEvent;
 class ConsumerTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Consumer */
-    protected $consumer;
-
-    /** @var string */
-    protected $testDir;
+    protected Consumer $consumer;
+    protected string $testDir;
 
     /**
      * @throws \Micronative\EventSchema\Exceptions\JsonException

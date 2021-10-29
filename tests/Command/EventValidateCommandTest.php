@@ -3,9 +3,10 @@
 namespace Tests\Command;
 
 use Micronative\EventSchema\Command\EventValidateCommand;
+use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
-use Micronative\EventSchema\Event\ServiceValidator;
 use Micronative\EventSchema\Exceptions\ValidatorException;
+use Micronative\EventSchema\Service\ServiceInterface;
 use PHPUnit\Framework\TestCase;
 use Tests\Service\Samples\CreateTask;
 use Tests\Service\Samples\SampleEvent;
@@ -13,16 +14,10 @@ use Tests\Service\Samples\SampleEvent;
 class EventValidateCommandTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Command\EventValidateCommand */
-    private $command;
-
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    private $validator;
-
-    /** @var \Micronative\EventSchema\Service\ServiceInterface */
-    private $service;
-
-    /** @var \Micronative\EventSchema\Event\AbstractEvent */
-    private $event;
+    private EventValidateCommand $command;
+    private EventValidator $validator;
+    private ServiceInterface $service;
+    private AbstractEvent $event;
 
     public function setUp(): void
     {

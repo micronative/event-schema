@@ -10,11 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceFactoryTest extends TestCase
 {
-    /** @var string */
-    protected $testDir;
-
-    /** @var ServiceFactory */
-    protected $serviceFactory;
+    protected string $testDir;
+    protected ServiceFactory $serviceFactory;
 
     public function setUp(): void
     {

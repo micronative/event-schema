@@ -6,8 +6,7 @@ use Samples\MessageBroker\MockBroker;
 
 class MockPublisher
 {
-    /** @var \Samples\MessageBroker\MockBroker */
-    private $broker;
+    private ?MockBroker $broker;
 
     public function __construct(MockBroker $broker = null)
     {

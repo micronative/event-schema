@@ -36,7 +36,7 @@ class SampleEvent extends AbstractEvent
         $jsonObject = json_decode($jsonString);
         $this->name = $jsonObject->name;
         $this->id = $jsonObject->id ?? null;
-        $this->payload = $jsonObject->payload ?? null;
+        $this->payload = (array)$jsonObject->payload ?? null;
 
         return $this;
     }

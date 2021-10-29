@@ -8,14 +8,9 @@ use Micronative\EventSchema\Service\ServiceInterface;
 
 class ServiceConsumeCommand implements CommandInterface
 {
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    protected $eventValidator;
-
-    /** @var \Micronative\EventSchema\Service\ServiceInterface */
-    protected $service;
-
-    /** @var \Micronative\EventSchema\Event\AbstractEvent */
-    protected $event;
+    protected EventValidator $eventValidator;
+    protected ServiceInterface $service;
+    protected AbstractEvent $event;
 
     /**
      * ConsumeCommand constructor.

@@ -11,10 +11,8 @@ use PHPUnit\Framework\TestCase;
 class EventValidatorTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Event\EventValidator */
-    protected $validator;
-
-    /** @var string */
-    protected $testDir;
+    protected EventValidator $validator;
+    protected string $testDir;
 
     public function setUp(): void
     {

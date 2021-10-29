@@ -8,14 +8,9 @@ use Micronative\EventSchema\Service\RollbackInterface;
 
 class ServiceRollbackCommand implements CommandInterface
 {
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    protected $validator;
-
-    /** @var \Micronative\EventSchema\Service\RollbackInterface */
-    protected $service;
-
-    /** @var \Micronative\EventSchema\Event\AbstractEvent */
-    protected $event;
+    protected EventValidator $validator;
+    protected RollbackInterface $service;
+    protected AbstractEvent $event;
 
     /**
      * RollbackCommand constructor.

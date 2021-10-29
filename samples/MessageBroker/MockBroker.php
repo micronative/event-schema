@@ -7,17 +7,10 @@ use Micronative\FileCache\CachePool;
 
 class MockBroker
 {
-    /** @var string */
-    private $storageDir;
-
-    /** @var string */
-    private $storageName = 'broker.messages.storage';
-
-    /** @var \Micronative\FileCache\CachePool */
-    private $cachePool;
-
-    /** @var string[] */
-    private $messages = [];
+    private string $storageDir;
+    private string $storageName = 'broker.messages.storage';
+    private CachePool $cachePool;
+    private array $messages = [];
 
     /**
      * MockBroker constructor.

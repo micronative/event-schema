@@ -6,8 +6,7 @@ use Micronative\EventSchema\Config\AbstractEventConfig;
 
 class EventConfig extends AbstractEventConfig
 {
-    /** @var string[] */
-    protected $serviceClasses;
+    protected ?array $serviceClasses;
 
     /**
      * EventConfig constructor.

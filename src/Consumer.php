@@ -9,7 +9,6 @@ use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
 use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
-use Micronative\EventSchema\Event\ServiceValidator;
 use Micronative\EventSchema\Exceptions\ConsumerException;
 use Micronative\EventSchema\Service\RollbackInterface;
 use Micronative\EventSchema\Service\ServiceFactory;
@@ -18,23 +17,12 @@ use Psr\Container\ContainerInterface;
 
 class Consumer implements ConsumerInterface
 {
-    /** @var \Micronative\EventSchema\Config\Consumer\EventConfigRegister */
-    protected $eventConfigRegister;
-
-    /** @var \Micronative\EventSchema\Config\Consumer\ServiceConfigRegister */
-    protected $serviceConfigRegister;
-
-    /** @var \Micronative\EventSchema\Service\ServiceFactory */
-    protected $serviceFactory;
-
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    protected $eventValidator;
-
-    /** @var \Psr\Container\ContainerInterface */
-    protected $container;
-
-    /** @var string|null */
-    protected $assetDir;
+    protected EventConfigRegister $eventConfigRegister;
+    protected ServiceConfigRegister $serviceConfigRegister;
+    protected ServiceFactory $serviceFactory;
+    protected EventValidator $eventValidator;
+    protected ?ContainerInterface $container;
+    protected ?string $assetDir;
 
     /**
      * ServiceProvider constructor.
@@ -47,10 +35,10 @@ class Consumer implements ConsumerInterface
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      */
     public function __construct(
-        string $assetDir = null,
-        array $eventConfigs = null,
-        array $serviceConfigs = null,
-        ContainerInterface $container = null
+        ?string $assetDir = null,
+        ?array $eventConfigs = null,
+        ?array $serviceConfigs = null,
+        ?ContainerInterface $container = null
     ) {
         $this->assetDir = $assetDir;
         $this->eventConfigRegister = new EventConfigRegister($this->assetDir, $eventConfigs);
@@ -71,7 +59,7 @@ class Consumer implements ConsumerInterface
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function process(AbstractEvent $event = null, array $filteredEvents = null, bool $return = false)
+    public function process(?AbstractEvent $event = null, ?array $filteredEvents = null, ?bool $return = false)
     {
         $this->checkFilteredEvents($event, $filteredEvents);
         $serviceClasses = $this->retrieveServiceClasses($event);
@@ -138,7 +126,7 @@ class Consumer implements ConsumerInterface
      * @param array|null $filteredEvents
      * @throws \Micronative\EventSchema\Exceptions\ConsumerException
      */
-    private function checkFilteredEvents(AbstractEvent $event, array $filteredEvents = null)
+    private function checkFilteredEvents(AbstractEvent $event, ?array $filteredEvents = null)
     {
         if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
             throw new ConsumerException(ConsumerException::FILTERED_EVENT_ONLY . json_encode($filteredEvents));
@@ -251,10 +239,10 @@ class Consumer implements ConsumerInterface
     }
 
     /**
-     * @param \Micronative\EventSchema\Config\Consumer\EventConfigRegister|null $eventConfigRegister
+     * @param \Micronative\EventSchema\Config\Consumer\EventConfigRegister $eventConfigRegister
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setEventConfigRegister(EventConfigRegister $eventConfigRegister = null)
+    public function setEventConfigRegister(EventConfigRegister $eventConfigRegister)
     {
         $this->eventConfigRegister = $eventConfigRegister;
 
@@ -270,10 +258,10 @@ class Consumer implements ConsumerInterface
     }
 
     /**
-     * @param \Micronative\EventSchema\Config\Consumer\ServiceConfigRegister|null $serviceConfigRegister
+     * @param \Micronative\EventSchema\Config\Consumer\ServiceConfigRegister $serviceConfigRegister
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setServiceConfigRegister(ServiceConfigRegister $serviceConfigRegister = null)
+    public function setServiceConfigRegister(ServiceConfigRegister $serviceConfigRegister)
     {
         $this->serviceConfigRegister = $serviceConfigRegister;
 
@@ -283,16 +271,16 @@ class Consumer implements ConsumerInterface
     /**
      * @return \Micronative\EventSchema\Service\ServiceFactory
      */
-    public function getServiceFactory()
+    public function getServiceFactory(): ServiceFactory
     {
         return $this->serviceFactory;
     }
 
     /**
-     * @param \Micronative\EventSchema\Service\ServiceFactory|null $serviceFactory
+     * @param \Micronative\EventSchema\Service\ServiceFactory $serviceFactory
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setServiceFactory(ServiceFactory $serviceFactory = null)
+    public function setServiceFactory(ServiceFactory $serviceFactory): Consumer
     {
         $this->serviceFactory = $serviceFactory;
 
@@ -302,16 +290,16 @@ class Consumer implements ConsumerInterface
     /**
      * @return \Micronative\EventSchema\Event\EventValidator
      */
-    public function getEventValidator()
+    public function getEventValidator(): EventValidator
     {
         return $this->eventValidator;
     }
 
     /**
-     * @param \Micronative\EventSchema\Event\EventValidator|null $eventValidator
+     * @param \Micronative\EventSchema\Event\EventValidator $eventValidator
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setEventValidator(EventValidator $eventValidator = null)
+    public function setEventValidator(EventValidator $eventValidator): Consumer
     {
         $this->eventValidator = $eventValidator;
 
@@ -330,7 +318,7 @@ class Consumer implements ConsumerInterface
      * @param \Psr\Container\ContainerInterface|null $container
      * @return \Micronative\EventSchema\Consumer
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): Consumer
     {
         $this->container = $container;
 

@@ -10,10 +10,8 @@ use PHPUnit\Framework\TestCase;
 class EventConfigRegisterTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Config\Consumer\EventConfigRegister */
-    protected $eventConfigRegister;
-
-    /** @var string */
-    protected $testDir;
+    protected EventConfigRegister $eventConfigRegister;
+    protected string $testDir;
 
     public function setUp(): void
     {

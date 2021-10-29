@@ -10,7 +10,7 @@ use Tests\Service\Samples\SampleContainer;
 class SampleServiceTest extends TestCase
 {
     /** @coversDefaultClass \Tests\Service\Samples\CreateContact */
-    protected $sampleService;
+    protected CreateContact $sampleService;
 
     public function setUp(): void
     {
@@ -22,11 +22,9 @@ class SampleServiceTest extends TestCase
     {
         $this->sampleService
             ->setName('Create.Contact')
-            ->setSchema('json_schema_file')
             ->setContainer(new SampleContainer());
 
         $this->assertEquals('Create.Contact', $this->sampleService->getName());
-        $this->assertEquals('json_schema_file', $this->sampleService->getSchema());
         $this->assertInstanceOf(ContainerInterface::class, $this->sampleService->getContainer());
     }
 }

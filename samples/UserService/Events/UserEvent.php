@@ -6,8 +6,7 @@ use Micronative\EventSchema\Event\AbstractEvent;
 
 class UserEvent extends AbstractEvent
 {
-    /** @var \DateTime */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     public function __construct(string $name, string $version = null, string $id = null, array $payload = null)
     {

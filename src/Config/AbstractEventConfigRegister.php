@@ -8,12 +8,8 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractEventConfigRegister
 {
-    /** @var string|null */
-    protected $assetDir;
-
-    /** @var string[] $configFiles */
-    protected $configFiles = [];
-
+    protected ?string $assetDir;
+    protected ?array $configFiles = [];
     /** @var \Micronative\EventSchema\Config\AbstractEventConfig $eventConfigs */
     protected $eventConfigs = [];
 

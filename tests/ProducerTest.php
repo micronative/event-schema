@@ -11,10 +11,8 @@ use Tests\Event\SampleEvent;
 class ProducerTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Producer */
-    protected $producer;
-
-    /** @var string */
-    protected $testDir;
+    protected Producer $producer;
+    protected string $testDir;
 
 
     public function setUp(): void

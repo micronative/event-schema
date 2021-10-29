@@ -10,10 +10,8 @@ use PHPUnit\Framework\TestCase;
 class ServiceConfigRegisterTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Config\Consumer\ServiceConfigRegister */
-    protected $serviceConfigRegister;
-
-    /** @var string */
-    protected $testDir;
+    protected ServiceConfigRegister $serviceConfigRegister;
+    protected string $testDir;
 
     public function setUp(): void
     {

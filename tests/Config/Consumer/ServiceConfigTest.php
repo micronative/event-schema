@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class ServiceConfigTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Config\Consumer\ServiceConfig */
-    private $serviceConfig;
+    private ServiceConfig $serviceConfig;
 
     public function testSettersAndGetters()
     {

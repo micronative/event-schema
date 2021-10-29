@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 class JsonReaderTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\EventSchema\Json\JsonReader */
-
-    /** @var string */
-    protected $testDir;
+    protected string $testDir;
 
     public function setUp(): void
     {

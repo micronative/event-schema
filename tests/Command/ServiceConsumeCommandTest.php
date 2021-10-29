@@ -2,26 +2,23 @@
 
 namespace Tests\Command;
 
+use Micronative\EventSchema\Command\EventValidateCommand;
 use Micronative\EventSchema\Command\ServiceConsumeCommand;
+use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\ValidatorException;
+use Micronative\EventSchema\Service\ServiceInterface;
 use PHPUnit\Framework\TestCase;
 use Tests\Service\Samples\CreateTask;
 use Tests\Service\Samples\SampleEvent;
 
 class ServiceConsumeCommandTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\EventSchema\Command\EventValidateCommand */
-    private $command;
-
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    private $validator;
-
-    /** @var \Micronative\EventSchema\Service\ServiceInterface */
-    private $service;
-
-    /** @var \Micronative\EventSchema\Event\AbstractEvent */
-    private $event;
+    /** @coversDefaultClass \Micronative\EventSchema\Command\ServiceConsumeCommand */
+    private ServiceConsumeCommand $command;
+    private EventValidator $validator;
+    private ServiceInterface $service;
+    private AbstractEvent $event;
 
     public function setUp(): void
     {

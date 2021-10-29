@@ -6,8 +6,7 @@ use Micronative\EventSchema\Event\AbstractEvent;
 
 class TaskEvent extends AbstractEvent
 {
-    /** @var \DateTime */
-    private $receivedAt;
+    private \DateTime $receivedAt;
 
     public function __construct(string $name, string $version = null, string $id = null, array $payload = null)
     {

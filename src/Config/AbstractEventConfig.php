@@ -4,14 +4,10 @@ namespace Micronative\EventSchema\Config;
 
 abstract class AbstractEventConfig
 {
-    /** @var string */
-    protected $name;
-
-    /** @var string|array */
+    protected string $name;
+    /** @var string|array $version */
     protected $version;
-
-    /** @var string */
-    protected $schemaFile;
+    protected ?string $schemaFile;
 
     /**
      * @return string

@@ -12,14 +12,9 @@ use Samples\UserService\Repositories\UserRepository;
 
 class UserApp
 {
-    /** @var \Samples\UserService\Broadcast\MockPublisher */
-    private $publisher;
-
-    /** @var \Samples\UserService\Repositories\UserRepository */
-    private $userRepository;
-
-    /** @var \Micronative\EventSchema\Producer */
-    private $producer;
+    private MockPublisher $publisher;
+    private UserRepository $userRepository;
+    private Producer $producer;
 
     /**
      * UserApp constructor.

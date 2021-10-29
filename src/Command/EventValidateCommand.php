@@ -7,14 +7,9 @@ use Micronative\EventSchema\Event\EventValidator;
 
 class EventValidateCommand implements CommandInterface
 {
-    /** @var \Micronative\EventSchema\Event\EventValidator */
-    private $eventValidator;
-
-    /** @var \Micronative\EventSchema\Event\AbstractEvent */
-    private $event;
-
-    /** @var bool */
-    private $applyDefaultValues;
+    private EventValidator $eventValidator;
+    private AbstractEvent $event;
+    private bool $applyDefaultValues;
 
     /**
      * EventValidateCommand constructor.

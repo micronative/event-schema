@@ -6,40 +6,12 @@ use Psr\Container\ContainerInterface;
 
 abstract class AbstractService implements ServiceInterface
 {
-    /** @var string */
-    protected $name;
+    protected ?string $name = null;
+    protected ?ContainerInterface $container;
 
-    /**
-     * @var string relative path (from Processor::schemaDir) to json schema file
-     * @see \Micronative\EventSchema\Consumer::assetDir
-     */
-    protected $schema;
-
-    /** @var \Psr\Container\ContainerInterface */
-    protected $container;
-
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(?ContainerInterface $container = null)
     {
         $this->container = $container;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSchema()
-    {
-        return $this->schema;
-    }
-
-    /**
-     * @param string|null $schema
-     * @return \Micronative\EventSchema\Service\AbstractService
-     */
-    public function setSchema(string $schema = null)
-    {
-        $this->schema = $schema;
-
-        return $this;
     }
 
     /**
@@ -54,7 +26,7 @@ abstract class AbstractService implements ServiceInterface
      * @param string|null $name
      * @return \Micronative\EventSchema\Service\AbstractService
      */
-    public function setName(string $name = null)
+    public function setName(?string $name)
     {
         $this->name = $name;
 
@@ -73,7 +45,7 @@ abstract class AbstractService implements ServiceInterface
      * @param \Psr\Container\ContainerInterface|null $container
      * @return AbstractService
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container)
     {
         $this->container = $container;
 

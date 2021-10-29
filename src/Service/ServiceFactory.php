@@ -23,8 +23,11 @@ class ServiceFactory
             throw new ServiceException(ServiceException::INVALID_SERVICE_CLASS . $serviceClass);
         }
 
-        if ($service instanceof ServiceInterface) {
+        if($service instanceof AbstractService){
             $service->setName($serviceClass);
+        }
+
+        if ($service instanceof ServiceInterface) {
 
             return $service;
         }

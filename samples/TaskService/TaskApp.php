@@ -7,15 +7,10 @@ use Samples\MessageBroker\MockBroker;
 use Samples\TaskService\Broadcast\MockReceiver;
 use Samples\TaskService\Events\TaskEvent;
 
-use function Webmozart\Assert\Tests\StaticAnalysis\null;
-
 class TaskApp
 {
-    /** @var \Samples\TaskService\Broadcast\MockReceiver */
-    private $receiver;
-
-    /** @var \Micronative\EventSchema\Consumer */
-    private $consumer;
+    private MockReceiver $receiver;
+    private Consumer $consumer;
 
     /**
      * App constructor.

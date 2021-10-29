@@ -4,11 +4,8 @@ namespace Samples\UserService\Entities;
 
 class User
 {
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $email;
+    private string $name;
+    private string $email;
 
     public function __construct(string $name, string $email)
     {

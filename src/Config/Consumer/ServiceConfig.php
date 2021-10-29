@@ -4,14 +4,9 @@ namespace Micronative\EventSchema\Config\Consumer;
 
 class ServiceConfig
 {
-    /** @var string */
-    protected $class;
-
-    /** @var string */
-    protected $alias;
-
-    /** @var string[] */
-    protected $callbacks;
+    protected string $class;
+    protected ?string $alias;
+    protected ?array $callbacks;
 
     /**
      * ServiceConfig constructor.
