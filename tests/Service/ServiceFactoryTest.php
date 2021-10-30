@@ -54,6 +54,5 @@ class ServiceFactoryTest extends TestCase
         $serviceConfig = new ServiceConfig($serviceClass, null, []);
         $service = $this->serviceFactory->createService($serviceConfig);
         $this->assertTrue($service instanceof ServiceInterface);
-        $this->assertEquals('\Tests\Service\Samples\CreateContact', $service->getName());
     }
 }

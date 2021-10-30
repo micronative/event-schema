@@ -3,10 +3,9 @@
 namespace Samples\TaskService\Services;
 
 use Micronative\EventSchema\Event\AbstractEvent;
-use Micronative\EventSchema\Service\AbstractService;
 use Micronative\EventSchema\Service\RollbackInterface;
 
-class CreateTaskForNewUser extends AbstractService implements RollbackInterface
+class CreateTaskForNewUser implements RollbackInterface
 {
     public function consume(AbstractEvent $event = null)
     {

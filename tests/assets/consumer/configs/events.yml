@@ -13,7 +13,7 @@
   services:
     - UpdateContact
 - event: User.Updated
-  version: [2.0.0, 3.0.0]
+  version: 2.0.0
   schema: /assets/consumer/schemas/UpdateContact.json
   services:
     - UpdateContact

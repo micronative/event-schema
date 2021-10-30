@@ -29,16 +29,12 @@ class EventConfigRegister extends AbstractEventConfigRegister
      * @param string|null $version
      * @return \Micronative\EventSchema\Config\AbstractEventConfig|null
      */
-    public function retrieveEventConfig(string $eventName, string $version = null)
+    public function retrieveEventConfig(string $eventName, ?string $version = null)
     {
         if (isset($this->eventConfigs[$eventName])) {
             /** @var \Micronative\EventSchema\Config\AbstractEventConfig $eventConfig */
             foreach ($this->eventConfigs[$eventName] as $eventConfig) {
-                if ($version == null && $eventConfig->getVersion() == null) {
-                    return $eventConfig;
-                }
-
-                if (!empty($eventConfig->getVersion()) && in_array($version, $eventConfig->getVersion())) {
+                if ($version === $eventConfig->getVersion()) {
                     return $eventConfig;
                 }
             }

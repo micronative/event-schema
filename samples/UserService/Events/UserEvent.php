@@ -49,4 +49,6 @@ class UserEvent extends AbstractEvent
 
         return $this;
     }
+
+
 }

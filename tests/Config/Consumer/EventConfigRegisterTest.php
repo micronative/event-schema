@@ -17,11 +17,12 @@ class EventConfigRegisterTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(dirname(__FILE__)));
-        $this->eventConfigRegister = new EventConfigRegister($this->testDir,
-                                                             [
-                                                                 "/assets/consumer/configs/events.yml",
-                                                                 "/assets/consumer/configs/events.json"
-                                                             ]
+        $this->eventConfigRegister = new EventConfigRegister(
+            $this->testDir,
+            [
+                "/assets/consumer/configs/events.yml",
+                "/assets/consumer/configs/events.json"
+            ]
         );
     }
 
@@ -89,7 +90,7 @@ class EventConfigRegisterTest extends TestCase
     public function testRetrieveEvent()
     {
         $this->eventConfigRegister->loadEventConfigs();
-        $config = new EventConfig("Event.Name", ['1.0.0', '2.0.0'], null, ["SomeServiceClass"]);
+        $config = new EventConfig("Event.Name", '1.0.0', null, ["SomeServiceClass"]);
         $this->eventConfigRegister->registerEventConfig($config);
         /** @var EventConfig $eventConfig */
         $eventConfig = $this->eventConfigRegister->retrieveEventConfig("Event.Name", '1.0.0');

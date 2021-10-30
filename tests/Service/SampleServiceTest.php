@@ -20,11 +20,7 @@ class SampleServiceTest extends TestCase
 
     public function testSettersAndGetters()
     {
-        $this->sampleService
-            ->setName('Create.Contact')
-            ->setContainer(new SampleContainer());
-
-        $this->assertEquals('Create.Contact', $this->sampleService->getName());
+        $this->sampleService->setContainer(new SampleContainer());
         $this->assertInstanceOf(ContainerInterface::class, $this->sampleService->getContainer());
     }
 }

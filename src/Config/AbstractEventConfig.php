@@ -5,8 +5,7 @@ namespace Micronative\EventSchema\Config;
 abstract class AbstractEventConfig
 {
     protected string $name;
-    /** @var string|array $version */
-    protected $version;
+    protected ?string $version;
     protected ?string $schemaFile;
 
     /**
@@ -29,18 +28,18 @@ abstract class AbstractEventConfig
     }
 
     /**
-     * @return string|array|null
+     * @return string|null
      */
-    public function getVersion()
+    public function getVersion(): ?string
     {
         return $this->version;
     }
 
     /**
-     * @param string|array $version
+     * @param string|null $version
      * @return \Micronative\EventSchema\Config\AbstractEventConfig
      */
-    public function setVersion($version): AbstractEventConfig
+    public function setVersion(?string $version): AbstractEventConfig
     {
         $this->version = $version;
 

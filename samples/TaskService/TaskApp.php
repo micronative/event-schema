@@ -22,10 +22,12 @@ class TaskApp
     {
         $this->receiver = new MockReceiver($broker);
         $assetDir = dirname(__FILE__);
+        $container = new Container();
         $this->consumer = new Consumer(
             $assetDir,
             ["/assets/configs/events.yml"],
             ["/assets/configs/services.yml"],
+            $container
         );
     }
 
@@ -41,9 +43,9 @@ class TaskApp
         if (!empty($message)) {
             $obj = json_decode($message);
             $taskEvent = new TaskEvent($obj->name, isset($obj->version) ? $obj->version : null , $obj->id, (array)$obj->payload);
-            echo "-- Start processing event {$taskEvent->getName()}". PHP_EOL;
+            echo "-- Start processing event: {$taskEvent->getName()}". PHP_EOL;
             $this->consumer->process($taskEvent);
-            echo "-- Finish processing event {$taskEvent->getName()}". PHP_EOL;
+            echo "-- Finish processing event: {$taskEvent->getName()}". PHP_EOL;
         }
     }
 }
