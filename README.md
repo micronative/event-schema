@@ -29,7 +29,7 @@ composer require micronative/event-schema:1.0.0
 </pre>
 
 ## Sample code
-### Configs
+
 The codes under [samples](./samples) is a mock microservice architecture:
 - a [MessageBroker](./samples/MessageBroker)
 - two microservices: [UserService](./samples/UserService) and [TaskService](./samples/TaskService)
@@ -38,7 +38,7 @@ In this sample, UserService is a producer and TaskService is a consumer. When a 
 it will use Micronative\EventSchema\Producer to validate the event then publish it to MessageBroker. TaskService is 
 listening to these events and use Micronative\EventSchema\Consumer to process the incoming events.
 
-#### Producer configs:
+### Producer configs:
 ```yaml
 - event: User.Created
   version: 1.0.0
@@ -104,7 +104,7 @@ class UserApp
 ```
 @see: [UserService/UserApp.php](samples/UserService/UserApp.php)
 
-#### Consumer configs
+### Consumer configs
 ```yaml
 - event: User.Created
   version: 1.0.0
@@ -193,39 +193,3 @@ class TaskApp
 }
 ```
 @see: [TaskService/TaskApp.php](samples/TaskService/TaskApp.php)
-
-- create user
-```php
-try {
-    $broker = new MockBroker();
-    $userApp = new UserApp($broker);
-    $userApp->createUser('Ken', 'ken@bc.com');
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
-```
-@see: [user_service_create_user.php](samples/user_service_create_user.php)
-
-- update user
-```php
-try {
-    $broker = new MockBroker();
-    $userApp = new UserApp($broker);
-    $user = new User('John', 'John@bc.com');
-    $userApp->updateUser($user);
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
-```
-@see: [user_service_update_user.php](samples/user_service_update_user.php)
-
-```php
-try {
-    $broker = new MockBroker();
-    $taskApp = new TaskApp($broker);
-    $taskApp->listen();
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
-```
-@see: [task_service.php](samples/task_service.php)
