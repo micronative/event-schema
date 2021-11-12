@@ -8,7 +8,7 @@ class UserEvent extends AbstractEvent
 {
     private \DateTime $createdAt;
 
-    public function __construct(string $name, string $version = null, string $id = null, array $payload = null)
+    public function __construct(?string $name = null, ?string $version = null, ?string $id = null, ?array $payload = null)
     {
         $this->name = $name;
         $this->version = $version;
@@ -45,7 +45,7 @@ class UserEvent extends AbstractEvent
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->version = isset($data['version']) ? $data['version'] : null;
         $this->id = isset($data['id']) ? $data['id'] : null;
-        $this->payload = isset($data['payload']) ? $data['payload'] : null;
+        $this->payload = isset($data['payload']) ? (array)$data['payload'] : null;
 
         return $this;
     }

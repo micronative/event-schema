@@ -128,6 +128,10 @@ class Consumer implements ConsumerInterface
      */
     private function checkFilteredEvents(AbstractEvent $event, ?array $filteredEvents = null)
     {
+        if(empty($event->getName())){
+            throw new ConsumerException(ConsumerException::EMPTY_EVENT_NAME);
+        }
+
         if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
             throw new ConsumerException(ConsumerException::FILTERED_EVENT_ONLY . json_encode($filteredEvents));
         }

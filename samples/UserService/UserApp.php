@@ -44,8 +44,7 @@ class UserApp
 
             if ($this->producer->validate($userEvent, true)) {
                 echo "-- Start publishing event to broker: {$userEvent->getName()}".PHP_EOL;
-                $message = $userEvent->jsonSerialize();
-                $this->publisher->publish($message);
+                $this->publisher->publish($userEvent->jsonSerialize());
                 echo "-- Finish publishing event to broker: {$userEvent->getName()}".PHP_EOL;
             }
         }
@@ -61,7 +60,6 @@ class UserApp
         if ($this->userRepository->update($user)) {
             $userEvent = new UserEvent(UserRepository::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray());
 
-            $userEvent->setSchemaFile('/assets/schemas/User.Updated.schema.json');
             if ($this->producer->validate($userEvent, true)) {
                 echo "-- Start publishing event to broker: {$userEvent->getName()}".PHP_EOL;
                 $this->publisher->publish($userEvent->jsonSerialize());

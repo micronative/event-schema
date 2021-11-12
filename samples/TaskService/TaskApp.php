@@ -41,8 +41,7 @@ class TaskApp
     {
         $message = $this->receiver->get();
         if (!empty($message)) {
-            $obj = json_decode($message);
-            $taskEvent = new TaskEvent($obj->name, isset($obj->version) ? $obj->version : null , $obj->id, (array)$obj->payload);
+            $taskEvent = (new TaskEvent())->unserialize($message);
             echo "-- Start processing event: {$taskEvent->getName()}". PHP_EOL;
             $this->consumer->process($taskEvent);
             echo "-- Finish processing event: {$taskEvent->getName()}". PHP_EOL;

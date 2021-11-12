@@ -6,7 +6,7 @@ use JsonSerializable;
 
 abstract class AbstractEvent implements JsonSerializable
 {
-    protected string $name;
+    protected ?string $name = null;
     protected ?string $version = null;
     protected ?string $id = null;
     protected ?array $payload = null;
@@ -50,7 +50,7 @@ abstract class AbstractEvent implements JsonSerializable
      *   $this->name = isset($data['name']) ? $data['name'] : null;
      *   $this->version = isset($data['version']) ? $data['version'] : null;
      *   $this->id = isset($data['id']) ? $data['id'] : null;
-     *   $this->payload = isset($data['payload']) ? $data['payload'] : null;
+     *   $this->payload = isset($data['payload']) ? (array)$data['payload'] : null;
      *
      *   return $this;
      * }
