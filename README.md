@@ -38,7 +38,7 @@ In this sample, UserService is a producer and TaskService is a consumer. When a 
 it will use Micronative\EventSchema\Producer to validate the event then publish it to MessageBroker. TaskService is 
 listening to these events and use Micronative\EventSchema\Consumer to process the incoming events.
 
-- Producer configs:
+#### Producer configs:
 ```yaml
 - event: User.Created
   version: 1.0.0
@@ -104,7 +104,7 @@ class UserApp
 ```
 @see: [UserService/UserApp.php](samples/UserService/UserApp.php)
 
-- Consumer configs
+#### Consumer configs
 ```yaml
 - event: User.Created
   version: 1.0.0
