@@ -16,7 +16,7 @@
     }
   ],
   "repositories": [
-    { "type": "vcs", "url": "git@github.com/micronative/file-cache" }
+    { "type": "vcs", "url": "https://github.com/micronative/file-cache" }
   ],
   "require": {
     "php": "^7.4||^8.0",
