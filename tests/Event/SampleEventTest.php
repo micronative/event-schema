@@ -26,14 +26,14 @@ class SampleEventTest extends TestCase
         $this->assertSame($event->getId(), '1');
         $this->assertEquals(["name" => "Ken"], $event->getPayload());
 
-        $json = $event->jsonSerialize();
+        $json = $event->toJson();
         $this->assertTrue(is_string($json));
         $this->assertEquals('{"name":"Test.Event.Name","id":"1","payload":{"name":"Ken"}}', $json);
 
         $event = new SampleEvent("SomeName");
         $event->setName("Users.afterSaveCommit.Create");
         $event->setPayload(["user" => ["data" => ["name" => "Ken"]], "account" => ["data" => ["name" => "Brighte"]]]);
-        $json = $event->jsonSerialize();
+        $json = $event->toJson();
         $this->assertTrue(is_string($json));
         $this->assertEquals(
             '{"name":"Users.afterSaveCommit.Create","id":null,"payload":{"user":{"data":{"name":"Ken"}},"account":{"data":{"name":"Brighte"}}}}',
@@ -41,7 +41,7 @@ class SampleEventTest extends TestCase
         );
 
         $event = new SampleEvent('SomeEvent');
-        $event->unserialize('{"name":"Test.Event.Name","id":"1","payload":{"name":"Ken"}}');
+        $event->fromJson('{"name":"Test.Event.Name","id":"1","payload":{"name":"Ken"}}');
         $this->assertEquals("Test.Event.Name", $event->getName());
         $this->assertEquals(1, $event->getId());
         $this->assertEquals(['name' => 'Ken'], $event->getPayload());

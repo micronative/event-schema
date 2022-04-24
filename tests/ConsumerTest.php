@@ -52,22 +52,6 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
-     * @throws \Micronative\EventSchema\Exceptions\JsonException
-     * @throws \Micronative\EventSchema\Exceptions\ServiceException
-     * @throws \Micronative\EventSchema\Exceptions\ValidatorException
-     */
-    public function testProcessWithReturn()
-    {
-        $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
-        );
-        $event = new SampleEvent('User.Created', null, $data->id, (array)$data->payload);
-        $result = $this->consumer->process($event, null, true);
-        $this->assertInstanceOf(AbstractEvent::class, $result);
-    }
-
-    /**
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ConsumerException

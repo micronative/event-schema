@@ -16,7 +16,7 @@ class SampleEvent extends AbstractEvent
     /**
      * @return false|string
      */
-    public function jsonSerialize()
+    public function toJson()
     {
         return json_encode(
             [
@@ -31,7 +31,7 @@ class SampleEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Tests\Service\Samples\SampleEvent
      */
-    public function unserialize(string $jsonString)
+    public function fromJson(string $jsonString)
     {
         $jsonObject = json_decode($jsonString);
         $this->name = $jsonObject->name;

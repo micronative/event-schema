@@ -44,7 +44,7 @@ class UserApp
 
             if ($this->producer->validate($userEvent, true)) {
                 echo "-- Start publishing event to broker: {$userEvent->getName()}".PHP_EOL;
-                $this->publisher->publish($userEvent->jsonSerialize());
+                $this->publisher->publish($userEvent->toJson());
                 echo "-- Finish publishing event to broker: {$userEvent->getName()}".PHP_EOL;
             }
         }
@@ -62,7 +62,7 @@ class UserApp
 
             if ($this->producer->validate($userEvent, true)) {
                 echo "-- Start publishing event to broker: {$userEvent->getName()}".PHP_EOL;
-                $this->publisher->publish($userEvent->jsonSerialize());
+                $this->publisher->publish($userEvent->toJson());
                 echo "-- Finish publishing event to broker: {$userEvent->getName()}".PHP_EOL;
             }
         }

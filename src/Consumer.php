@@ -10,6 +10,7 @@ use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
 use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\ConsumerException;
+use Micronative\EventSchema\Json\JsonReader;
 use Micronative\EventSchema\Service\RollbackInterface;
 use Micronative\EventSchema\Service\ServiceFactory;
 use Micronative\EventSchema\Service\ServiceInterface;
@@ -52,14 +53,13 @@ class Consumer implements ConsumerInterface
     /**
      * @param \Micronative\EventSchema\Event\AbstractEvent|null $event
      * @param array|null $filteredEvents
-     * @param bool $return
-     * @return bool|\Micronative\EventSchema\Event\AbstractEvent
+     * @return bool
      * @throws \Micronative\EventSchema\Exceptions\ConsumerException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function process(?AbstractEvent $event = null, ?array $filteredEvents = null, ?bool $return = false)
+    public function process(?AbstractEvent $event = null, ?array $filteredEvents = null)
     {
         $this->checkFilteredEvents($event, $filteredEvents);
         $serviceClasses = $this->retrieveServiceClasses($event);
@@ -73,10 +73,6 @@ class Consumer implements ConsumerInterface
             }
 
             $callbacks = $serviceConfig->getCallbacks();
-            if ($return === true) {
-                return $this->runService($event, $service, $callbacks, $return);
-            }
-
             $this->runService($event, $service, $callbacks);
         }
 
@@ -85,14 +81,16 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
+     * @param array|null $filteredEvents
      * @return bool
      * @throws \Micronative\EventSchema\Exceptions\ConsumerException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function rollback(AbstractEvent $event)
+    public function rollback(AbstractEvent $event, ?array $filteredEvents = null)
     {
+        $this->checkFilteredEvents($event, $filteredEvents);
         $serviceClasses = $this->retrieveServiceClasses($event);
         foreach ($serviceClasses as $class) {
             if (empty($serviceConfig = $this->serviceConfigRegister->retrieveServiceConfig($class))) {
@@ -125,6 +123,7 @@ class Consumer implements ConsumerInterface
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      * @param array|null $filteredEvents
      * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
     private function checkFilteredEvents(AbstractEvent $event, ?array $filteredEvents = null)
     {
@@ -133,7 +132,7 @@ class Consumer implements ConsumerInterface
         }
 
         if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
-            throw new ConsumerException(ConsumerException::FILTERED_EVENT_ONLY . json_encode($filteredEvents));
+            throw new ConsumerException(ConsumerException::FILTERED_EVENT_ONLY . JsonReader::encode($filteredEvents));
         }
     }
 

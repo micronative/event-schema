@@ -41,7 +41,7 @@ class TaskApp
     {
         $message = $this->receiver->get();
         if (!empty($message)) {
-            $taskEvent = (new TaskEvent())->unserialize($message);
+            $taskEvent = (new TaskEvent())->fromJson($message);
             echo "-- Start processing event: {$taskEvent->getName()}". PHP_EOL;
             $this->consumer->process($taskEvent);
             echo "-- Finish processing event: {$taskEvent->getName()}". PHP_EOL;

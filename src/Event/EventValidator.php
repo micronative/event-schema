@@ -39,7 +39,7 @@ class EventValidator
             return true;
         }
 
-        if (empty($jsonObject = JsonReader::decode($event->jsonSerialize()))) {
+        if (empty($jsonObject = JsonReader::decode($event->toJson()))) {
             throw new ValidatorException(ValidatorException::INVALID_JSON);
         }
 
@@ -56,12 +56,12 @@ class EventValidator
 
         if (!$this->validator->isValid()) {
             throw new ValidatorException(
-                ValidatorException::INVALIDATED_EVENT . json_encode($this->validator->getErrors())
+                ValidatorException::INVALIDATED_EVENT . JsonReader::encode($this->validator->getErrors())
             );
         }
 
         if ($applyDefaultValues === true) {
-            $event->unserialize(json_encode($jsonObject));
+            $event->fromJson(JsonReader::encode($jsonObject));
         }
 
         return true;

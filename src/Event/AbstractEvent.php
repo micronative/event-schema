@@ -2,9 +2,7 @@
 
 namespace Micronative\EventSchema\Event;
 
-use JsonSerializable;
-
-abstract class AbstractEvent implements JsonSerializable
+abstract class AbstractEvent
 {
     protected ?string $name = null;
     protected ?string $version = null;
@@ -24,7 +22,7 @@ abstract class AbstractEvent implements JsonSerializable
      * @return false|string
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    abstract public function jsonSerialize();
+    abstract public function toJson();
     /**
      * {
      *   return json_encode(
@@ -43,7 +41,7 @@ abstract class AbstractEvent implements JsonSerializable
      * @return \Micronative\EventSchema\Event\AbstractEvent
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    abstract public function unserialize(string $jsonString);
+    abstract public function fromJson(string $jsonString);
     /**
      * {
      *   $data = json_decode($jsonString, true);

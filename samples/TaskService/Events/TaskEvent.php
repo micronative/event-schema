@@ -20,7 +20,7 @@ class TaskEvent extends AbstractEvent
     /**
      * @return false|string
      */
-    public function jsonSerialize()
+    public function toJson()
     {
         return json_encode(
             array_filter(
@@ -39,7 +39,7 @@ class TaskEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Samples\TaskService\Events\TaskEvent
      */
-    public function unserialize(string $jsonString)
+    public function fromJson(string $jsonString)
     {
         $data = json_decode($jsonString, true);
         $this->name = isset($data['name']) ? $data['name'] : null;
