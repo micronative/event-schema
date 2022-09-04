@@ -4,7 +4,7 @@ namespace Samples\UserService\Broadcast;
 
 use Samples\MessageBroker\MockBroker;
 
-class MockPublisher
+class MockPublisher implements PublisherInterface
 {
     private ?MockBroker $broker;
 
@@ -13,8 +13,10 @@ class MockPublisher
         $this->broker = $broker;
     }
 
-    public function publish(string $message)
+    public function publish(string $message): bool
     {
         $this->broker->push($message);
+
+        return true;
     }
 }
