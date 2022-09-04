@@ -47,7 +47,7 @@ listening to these events and use Micronative\EventSchema\Consumer to process th
   version: 2.0.0
   schema: /assets/schemas/User.Updated.schema.json
 ```
-@see: [UserService/assets/configs/events.yml](samples/UserService/assets/configs/events.yml)
+@see: [samples/UserService/assets/configs/events.yml](samples/UserService/assets/configs/events.yml)
 
 ```php
 <?php
@@ -55,22 +55,16 @@ listening to these events and use Micronative\EventSchema\Consumer to process th
 namespace Samples\UserService;
 
 use Micronative\EventSchema\Producer;
-use Ramsey\Uuid\Uuid;
 use Samples\MessageBroker\MockBroker;
 use Samples\UserService\Broadcast\MockPublisher;
 use Samples\UserService\Entities\User;
-use Samples\UserService\Events\UserEvent;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserApp
 {
     private UserRepository $userRepository;
-    private EventDispatcherInterface $eventDispatcher;
-    private EventSubscriberInterface $eventSubscriber;
 
     /**
      * UserApp constructor.
@@ -80,44 +74,135 @@ class UserApp
      */
     public function __construct(MockBroker $broker = null)
     {
-        $this->userRepository = new UserRepository();
-        $this->eventSubscriber = new UserEventSubscriber(
+        $eventSubscriber = new UserEventSubscriber(
             new Producer(dirname(__FILE__), ["/assets/configs/events.yml"]),
             new MockPublisher($broker)
         );
-        $this->eventDispatcher = new EventDispatcher();
-        $this->eventDispatcher->addSubscriber($this->eventSubscriber);
+        $eventDispatcher = new EventDispatcher();
+        $eventDispatcher->addSubscriber($eventSubscriber);
+        $this->userRepository = new UserRepository($eventDispatcher);
     }
 
     /**
      * @param string $name
      * @param string $email
-     * @throws \Exception
      */
     public function createUser(string $name, string $email)
     {
-        $user = new User($name, $email);
-        if ($this->userRepository->save($user)) {
-            $userEvent = new UserEvent(UserEvent::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray());
-            $this->eventDispatcher->dispatch($userEvent, UserEvent::USER_CREATED);
-        }
+        $this->userRepository->save(new User($name, $email));
+    }
+
+    /**
+     * @param \Samples\UserService\Entities\User $user
+     */
+    public function updateUser(User $user)
+    {
+        $this->userRepository->update($user);
+    }
+}
+```
+@see: [Samples\UserService\UserApp](samples/UserService/UserApp.php)
+
+```php
+<?php
+
+namespace Samples\UserService\Repositories;
+
+use Ramsey\Uuid\Uuid;
+use Samples\UserService\Entities\User;
+use Samples\UserService\Events\UserEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+class UserRepository
+{
+    private EventDispatcherInterface $eventDispatcher;
+
+    /**
+     * UserRepository constructor.
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * @param \Samples\UserService\Entities\User $user
      * @throws \Exception
      */
-    public function updateUser(User $user)
+    public function save(User $user)
     {
-        if ($this->userRepository->update($user)) {
-            $userEvent = new UserEvent(UserEvent::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray());
-            $this->eventDispatcher->dispatch($userEvent, UserEvent::USER_UPDATED);
+        // save user then dispatch event
+        $this->eventDispatcher->dispatch(
+            new UserEvent(UserEvent::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            UserEvent::USER_CREATED
+        );
+    }
+
+    /**
+     * @param \Samples\UserService\Entities\User $user
+     * @throws \Exception
+     */
+    public function update(User $user)
+    {
+        // update user then dispatch event
+        $this->eventDispatcher->dispatch(
+            new UserEvent(UserEvent::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            UserEvent::USER_UPDATED
+        );
+    }
+}
+```
+@see: [Samples\UserService\Repositories\UserRepository](samples/UserService/Repositories/UserRepository.php)
+
+```php
+<?php
+
+namespace Samples\UserService\Events;
+
+use Micronative\EventSchema\ProducerInterface;
+use Samples\UserService\Broadcast\PublisherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class UserEventSubscriber implements EventSubscriberInterface
+{
+    private ProducerInterface $producer;
+    private PublisherInterface $publisher;
+
+    public function __construct(ProducerInterface $producer, PublisherInterface $publisher)
+    {
+        $this->producer = $producer;
+        $this->publisher = $publisher;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            UserEvent::USER_CREATED => 'onUserCreated',
+            UserEvent::USER_UPDATED => 'onUserUpdated',
+        ];
+    }
+
+    public function onUserCreated(UserEvent $userEvent)
+    {
+        if ($this->producer->validate($userEvent, true)) {
+            echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            $this->publisher->publish($userEvent->toJson());
+            echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+        }
+    }
+
+    public function onUserUpdated(UserEvent $userEvent)
+    {
+        if ($this->producer->validate($userEvent, true)) {
+            echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            $this->publisher->publish($userEvent->toJson());
+            echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
         }
     }
 }
-
 ```
-@see: [UserService/UserApp.php](samples/UserService/UserApp.php)
+@see: [Samples\UserService\Events\UserEventSubscriber](samples/UserService/Events/UserEventSubscriber.php)
 
 ### Consumer configs
 ```yaml
@@ -139,7 +224,7 @@ class UserApp
     - CreateTaskForUpdatedUser
     - SendNotificationToUpdatedUser
 ```
-@see: [TaskService/assets/configs/events.yml](samples/TaskService/assets/configs/events.yml)
+@see: [samples/TaskService/assets/configs/events.yml](samples/TaskService/assets/configs/events.yml)
 
 ```yaml
 - service: Samples\TaskService\Services\CreateTaskForNewUser
@@ -164,7 +249,7 @@ class UserApp
 - service: Samples\TaskService\Services\LogNotification
   alias: LogNotification
 ```
-@see: [TaskService/assets/configs/services.yml](samples/TaskService/assets/configs/services.yml)
+@see: [samples/TaskService/assets/configs/services.yml](samples/TaskService/assets/configs/services.yml)
 
 ```php
 class TaskApp
@@ -207,4 +292,4 @@ class TaskApp
     }
 }
 ```
-@see: [TaskService/TaskApp.php](samples/TaskService/TaskApp.php)
+@see: [Samples\TaskService\TaskApp](samples/TaskService/TaskApp.php)

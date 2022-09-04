@@ -2,17 +2,47 @@
 
 namespace Samples\UserService\Repositories;
 
+use Ramsey\Uuid\Uuid;
 use Samples\UserService\Entities\User;
+use Samples\UserService\Events\UserEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserRepository
 {
-    public function save(User $user)
+    private EventDispatcherInterface $eventDispatcher;
+
+    /**
+     * UserRepository constructor.
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
-        return true;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param \Samples\UserService\Entities\User $user
+     * @throws \Exception
+     */
+    public function save(User $user)
+    {
+        // save user then dispatch event
+        $this->eventDispatcher->dispatch(
+            new UserEvent(UserEvent::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            UserEvent::USER_CREATED
+        );
+    }
+
+    /**
+     * @param \Samples\UserService\Entities\User $user
+     * @throws \Exception
+     */
     public function update(User $user)
     {
-        return true;
+        // update user then dispatch event
+        $this->eventDispatcher->dispatch(
+            new UserEvent(UserEvent::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            UserEvent::USER_UPDATED
+        );
     }
 }
