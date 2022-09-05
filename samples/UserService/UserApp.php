@@ -3,9 +3,9 @@
 namespace Samples\UserService;
 
 use Micronative\EventSchema\Validator;
-use Samples\MessageBroker\Broker;
-use Samples\MessageBroker\Publisher;
 use Samples\UserService\Entities\User;
+use Micronative\MockBroker\Broker;
+use Micronative\MockBroker\Publisher;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -16,7 +16,7 @@ class UserApp
 
     /**
      * UserApp constructor.
-     * @param \Samples\MessageBroker\Broker|null $broker
+     * @param \Micronative\MockBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */

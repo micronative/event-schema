@@ -2,7 +2,7 @@
 
 require_once('./vendor/autoload.php');
 
-use Samples\MessageBroker\Broker;
+use Micronative\MockBroker\Broker;
 use Samples\TaskService\TaskApp;
 
 try {

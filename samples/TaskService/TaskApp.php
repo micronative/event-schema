@@ -3,9 +3,9 @@
 namespace Samples\TaskService;
 
 use Micronative\EventSchema\Processor;
-use Samples\MessageBroker\Broker;
-use Samples\MessageBroker\Consumer;
-use Samples\MessageBroker\ConsumerInterface;
+use Micronative\MockBroker\Broker;
+use Micronative\MockBroker\Consumer;
+use Micronative\MockBroker\ConsumerInterface;
 use Samples\TaskService\Events\TaskEvent;
 
 class TaskApp
@@ -16,7 +16,7 @@ class TaskApp
 
     /**
      * App constructor.
-     * @param \Samples\MessageBroker\Broker|null $broker
+     * @param \Micronative\MockBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */

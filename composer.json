@@ -16,7 +16,8 @@
     }
   ],
   "repositories": [
-    { "type": "vcs", "url": "https://github.com/micronative/file-cache" }
+    { "type": "vcs", "url": "https://github.com/micronative/file-cache" },
+    { "type": "vcs", "url": "https://github.com/micronative/mock-broker" }
   ],
   "require": {
     "php": "^7.4||^8.0",
@@ -29,6 +30,7 @@
     "phpunit/phpunit": "^9.0",
     "ramsey/uuid": "3.9.3",
     "micronative/file-cache": "^1.0.0",
+    "micronative/mock-broker": "^1.0.0",
     "symfony/event-dispatcher": "5.4.x-dev"
   },
   "autoload": {

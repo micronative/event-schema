@@ -4,12 +4,11 @@ namespace Tests;
 
 use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
-use Micronative\EventSchema\Processor;
-use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\ProcessorException;
 use Micronative\EventSchema\Exceptions\ValidatorException;
 use Micronative\EventSchema\Json\JsonReader;
+use Micronative\EventSchema\Processor;
 use Micronative\EventSchema\Service\ServiceFactory;
 use PHPUnit\Framework\TestCase;
 use Tests\Event\SampleEvent;

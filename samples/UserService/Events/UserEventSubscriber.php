@@ -3,7 +3,7 @@
 namespace Samples\UserService\Events;
 
 use Micronative\EventSchema\ValidatorInterface;
-use Samples\MessageBroker\PublisherInterface;
+use Micronative\MockBroker\PublisherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
