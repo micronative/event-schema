@@ -55,9 +55,9 @@ listening to these events and use Micronative\EventSchema\Consumer to process th
 namespace Samples\UserService;
 
 use Micronative\EventSchema\Validator;
-use Samples\MessageBroker\Broker;
-use Samples\MessageBroker\Publisher;
 use Samples\UserService\Entities\User;
+use Micronative\MockBroker\Broker;
+use Micronative\MockBroker\Publisher;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -68,7 +68,7 @@ class UserApp
 
     /**
      * UserApp constructor.
-     * @param \Samples\MessageBroker\Broker|null $broker
+     * @param \Micronative\MockBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
@@ -102,6 +102,7 @@ class UserApp
         $this->userRepository->update($user);
     }
 }
+
 ```
 @see: [Samples\UserService\UserApp](samples/UserService/UserApp.php)
 
@@ -163,7 +164,7 @@ class UserRepository
 namespace Samples\UserService\Events;
 
 use Micronative\EventSchema\ValidatorInterface;
-use Samples\MessageBroker\PublisherInterface;
+use Micronative\MockBroker\PublisherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
@@ -261,9 +262,9 @@ class UserEventSubscriber implements EventSubscriberInterface
 namespace Samples\TaskService;
 
 use Micronative\EventSchema\Processor;
-use Samples\MessageBroker\Broker;
-use Samples\MessageBroker\Consumer;
-use Samples\MessageBroker\ConsumerInterface;
+use Micronative\MockBroker\Broker;
+use Micronative\MockBroker\Consumer;
+use Micronative\MockBroker\ConsumerInterface;
 use Samples\TaskService\Events\TaskEvent;
 
 class TaskApp
@@ -274,7 +275,7 @@ class TaskApp
 
     /**
      * App constructor.
-     * @param \Samples\MessageBroker\Broker|null $broker
+     * @param \Micronative\MockBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
