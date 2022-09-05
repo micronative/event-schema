@@ -6,13 +6,18 @@ use Micronative\EventSchema\Event\AbstractEvent;
 
 class UserEvent extends AbstractEvent
 {
+    const USER_EVENT_TOPIC = 'User.Events';
     const USER_CREATED = 'User.Created';
     const USER_UPDATED = 'User.Updated';
 
     private \DateTime $createdAt;
 
-    public function __construct(?string $name = null, ?string $version = null, ?string $id = null, ?array $payload = null)
-    {
+    public function __construct(
+        ?string $name = null,
+        ?string $version = null,
+        ?string $id = null,
+        ?array $payload = null
+    ) {
         $this->name = $name;
         $this->version = $version;
         $this->id = $id;
@@ -52,6 +57,5 @@ class UserEvent extends AbstractEvent
 
         return $this;
     }
-
 
 }

@@ -16,7 +16,7 @@ use Micronative\EventSchema\Service\ServiceFactory;
 use Micronative\EventSchema\Service\ServiceInterface;
 use Psr\Container\ContainerInterface;
 
-class Consumer implements ConsumerInterface
+class Processor implements ProcessorInterface
 {
     protected EventConfigRegister $eventConfigRegister;
     protected ServiceConfigRegister $serviceConfigRegister;
@@ -243,7 +243,7 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param \Micronative\EventSchema\Config\Consumer\EventConfigRegister $eventConfigRegister
-     * @return \Micronative\EventSchema\Consumer
+     * @return \Micronative\EventSchema\Processor
      */
     public function setEventConfigRegister(EventConfigRegister $eventConfigRegister)
     {
@@ -262,7 +262,7 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param \Micronative\EventSchema\Config\Consumer\ServiceConfigRegister $serviceConfigRegister
-     * @return \Micronative\EventSchema\Consumer
+     * @return \Micronative\EventSchema\Processor
      */
     public function setServiceConfigRegister(ServiceConfigRegister $serviceConfigRegister)
     {
@@ -281,9 +281,9 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param \Micronative\EventSchema\Service\ServiceFactory $serviceFactory
-     * @return \Micronative\EventSchema\Consumer
+     * @return \Micronative\EventSchema\Processor
      */
-    public function setServiceFactory(ServiceFactory $serviceFactory): Consumer
+    public function setServiceFactory(ServiceFactory $serviceFactory): Processor
     {
         $this->serviceFactory = $serviceFactory;
 
@@ -300,9 +300,9 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param \Micronative\EventSchema\Event\EventValidator $eventValidator
-     * @return \Micronative\EventSchema\Consumer
+     * @return \Micronative\EventSchema\Processor
      */
-    public function setEventValidator(EventValidator $eventValidator): Consumer
+    public function setEventValidator(EventValidator $eventValidator): Processor
     {
         $this->eventValidator = $eventValidator;
 
@@ -319,9 +319,9 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param \Psr\Container\ContainerInterface|null $container
-     * @return \Micronative\EventSchema\Consumer
+     * @return \Micronative\EventSchema\Processor
      */
-    public function setContainer(?ContainerInterface $container = null): Consumer
+    public function setContainer(?ContainerInterface $container = null): Processor
     {
         $this->container = $container;
 
@@ -338,9 +338,9 @@ class Consumer implements ConsumerInterface
 
     /**
      * @param string|null $assetDir
-     * @return \Micronative\EventSchema\Consumer
+     * @return \Micronative\EventSchema\Processor
      */
-    public function setAssetDir(?string $assetDir): Consumer
+    public function setAssetDir(?string $assetDir): Processor
     {
         $this->assetDir = $assetDir;
 

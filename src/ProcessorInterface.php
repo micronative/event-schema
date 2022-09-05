@@ -4,7 +4,7 @@ namespace Micronative\EventSchema;
 
 use Micronative\EventSchema\Event\AbstractEvent;
 
-interface ConsumerInterface
+interface ProcessorInterface
 {
     /**
      * @param \Micronative\EventSchema\Event\AbstractEvent $event

@@ -2,27 +2,29 @@
 
 namespace Samples\TaskService;
 
-use Micronative\EventSchema\Consumer;
-use Samples\MessageBroker\MockBroker;
-use Samples\TaskService\Broadcast\MockReceiver;
+use Micronative\EventSchema\Processor;
+use Samples\MessageBroker\Broker;
+use Samples\MessageBroker\Consumer;
+use Samples\MessageBroker\ConsumerInterface;
 use Samples\TaskService\Events\TaskEvent;
 
 class TaskApp
 {
-    private MockReceiver $receiver;
-    private Consumer $consumer;
+    const USER_EVENT_TOPIC = 'User.Events';
+    private ConsumerInterface $consumer;
+    private Processor $processor;
 
     /**
      * App constructor.
-     * @param \Samples\MessageBroker\MockBroker|null $broker
+     * @param \Samples\MessageBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public function __construct(MockBroker $broker = null)
+    public function __construct(Broker $broker = null)
     {
-        $this->receiver = new MockReceiver($broker);
+        $this->consumer = new Consumer($broker);
         $container = new Container();
-        $this->consumer = new Consumer(
+        $this->processor = new Processor(
             dirname(__FILE__),
             ["/assets/configs/events.yml"],
             ["/assets/configs/services.yml"],
@@ -38,11 +40,11 @@ class TaskApp
      */
     public function listen()
     {
-        $message = $this->receiver->get();
+        $message = $this->consumer->consume(self::USER_EVENT_TOPIC);
         if (!empty($message)) {
             $taskEvent = (new TaskEvent())->fromJson($message);
             echo "-- Start processing event: {$taskEvent->getName()}" . PHP_EOL;
-            $this->consumer->process($taskEvent);
+            $this->processor->process($taskEvent);
             echo "-- Finish processing event: {$taskEvent->getName()}" . PHP_EOL;
         }
     }

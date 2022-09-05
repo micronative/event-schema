@@ -54,9 +54,9 @@ listening to these events and use Micronative\EventSchema\Consumer to process th
 
 namespace Samples\UserService;
 
-use Micronative\EventSchema\Producer;
-use Samples\MessageBroker\MockBroker;
-use Samples\UserService\Broadcast\MockPublisher;
+use Micronative\EventSchema\Validator;
+use Samples\MessageBroker\Broker;
+use Samples\MessageBroker\Publisher;
 use Samples\UserService\Entities\User;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
@@ -68,15 +68,15 @@ class UserApp
 
     /**
      * UserApp constructor.
-     * @param \Samples\MessageBroker\MockBroker|null $broker
+     * @param \Samples\MessageBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public function __construct(MockBroker $broker = null)
+    public function __construct(Broker $broker = null)
     {
         $eventSubscriber = new UserEventSubscriber(
-            new Producer(dirname(__FILE__), ["/assets/configs/events.yml"]),
-            new MockPublisher($broker)
+            new Validator(dirname(__FILE__), ["/assets/configs/events.yml"]),
+            new Publisher($broker)
         );
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($eventSubscriber);
@@ -86,6 +86,7 @@ class UserApp
     /**
      * @param string $name
      * @param string $email
+     * @throws \Exception
      */
     public function createUser(string $name, string $email)
     {
@@ -94,6 +95,7 @@ class UserApp
 
     /**
      * @param \Samples\UserService\Entities\User $user
+     * @throws \Exception
      */
     public function updateUser(User $user)
     {
@@ -160,18 +162,19 @@ class UserRepository
 
 namespace Samples\UserService\Events;
 
-use Micronative\EventSchema\ProducerInterface;
-use Samples\UserService\Broadcast\PublisherInterface;
+use Micronative\EventSchema\ValidatorInterface;
+use Samples\MessageBroker\PublisherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
-    private ProducerInterface $producer;
+
+    private ValidatorInterface $validator;
     private PublisherInterface $publisher;
 
-    public function __construct(ProducerInterface $producer, PublisherInterface $publisher)
+    public function __construct(ValidatorInterface $validator, PublisherInterface $publisher)
     {
-        $this->producer = $producer;
+        $this->validator = $validator;
         $this->publisher = $publisher;
     }
 
@@ -185,22 +188,23 @@ class UserEventSubscriber implements EventSubscriberInterface
 
     public function onUserCreated(UserEvent $userEvent)
     {
-        if ($this->producer->validate($userEvent, true)) {
+        if ($this->validator->validate($userEvent, true)) {
             echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
-            $this->publisher->publish($userEvent->toJson());
+            $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
             echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
         }
     }
 
     public function onUserUpdated(UserEvent $userEvent)
     {
-        if ($this->producer->validate($userEvent, true)) {
+        if ($this->validator->validate($userEvent, true)) {
             echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
-            $this->publisher->publish($userEvent->toJson());
+            $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
             echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
         }
     }
 }
+
 ```
 @see: [Samples\UserService\Events\UserEventSubscriber](samples/UserService/Events/UserEventSubscriber.php)
 
@@ -252,24 +256,34 @@ class UserEventSubscriber implements EventSubscriberInterface
 @see: [samples/TaskService/assets/configs/services.yml](samples/TaskService/assets/configs/services.yml)
 
 ```php
+<?php
+
+namespace Samples\TaskService;
+
+use Micronative\EventSchema\Processor;
+use Samples\MessageBroker\Broker;
+use Samples\MessageBroker\Consumer;
+use Samples\MessageBroker\ConsumerInterface;
+use Samples\TaskService\Events\TaskEvent;
+
 class TaskApp
 {
-    private MockReceiver $receiver;
-    private Consumer $consumer;
+    const USER_EVENT_TOPIC = 'User.Events';
+    private ConsumerInterface $consumer;
+    private Processor $processor;
 
     /**
      * App constructor.
-     * @param \Samples\MessageBroker\MockBroker|null $broker
+     * @param \Samples\MessageBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public function __construct(MockBroker $broker = null)
+    public function __construct(Broker $broker = null)
     {
-        $this->receiver = new MockReceiver($broker);
-        $assetDir = dirname(__FILE__);
+        $this->consumer = new Consumer($broker);
         $container = new Container();
-        $this->consumer = new Consumer(
-            $assetDir,
+        $this->processor = new Processor(
+            dirname(__FILE__),
             ["/assets/configs/events.yml"],
             ["/assets/configs/services.yml"],
             $container
@@ -284,10 +298,12 @@ class TaskApp
      */
     public function listen()
     {
-        $message = $this->receiver->get();
+        $message = $this->consumer->consume(self::USER_EVENT_TOPIC);
         if (!empty($message)) {
-            $taskEvent = (new TaskEvent())->unserialize($message);
-            $this->consumer->process($taskEvent);
+            $taskEvent = (new TaskEvent())->fromJson($message);
+            echo "-- Start processing event: {$taskEvent->getName()}" . PHP_EOL;
+            $this->processor->process($taskEvent);
+            echo "-- Finish processing event: {$taskEvent->getName()}" . PHP_EOL;
         }
     }
 }
