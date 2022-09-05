@@ -7,7 +7,7 @@ use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
 use Micronative\EventSchema\Processor;
 use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
-use Micronative\EventSchema\Exceptions\ConsumerException;
+use Micronative\EventSchema\Exceptions\ProcessorException;
 use Micronative\EventSchema\Exceptions\ValidatorException;
 use Micronative\EventSchema\Json\JsonReader;
 use Micronative\EventSchema\Service\ServiceFactory;
@@ -36,7 +36,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -54,7 +54,7 @@ class ConsumerTest extends TestCase
     /**
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      */
     public function testProcessFailed()
     {
@@ -68,7 +68,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -79,13 +79,13 @@ class ConsumerTest extends TestCase
             JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
-        $this->expectException(ConsumerException::class);
-        $this->expectExceptionMessageMatches('%' . ConsumerException::FILTERED_EVENT_ONLY . '%');
+        $this->expectException(ProcessorException::class);
+        $this->expectExceptionMessageMatches('%' . ProcessorException::FILTERED_EVENT_ONLY . '%');
         $this->consumer->process($event, ['EventOne', 'EventTwo']);
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -94,15 +94,15 @@ class ConsumerTest extends TestCase
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"));
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
-        $this->expectException(ConsumerException::class);
+        $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
-            sprintf(ConsumerException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
+            sprintf(ProcessorException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
         );
         $this->consumer->process($event);
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -111,15 +111,15 @@ class ConsumerTest extends TestCase
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
         $event = new SampleEvent('Empty.Service.Event', null, $data->id ?? null, (array)$data->payload);
-        $this->expectException(ConsumerException::class);
+        $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
-            sprintf(ConsumerException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
+            sprintf(ProcessorException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
         );
         $this->consumer->process($event);
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -134,7 +134,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -149,7 +149,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -167,7 +167,7 @@ class ConsumerTest extends TestCase
     /**
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithInvalidValidation()
     {
@@ -181,7 +181,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -196,7 +196,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -211,7 +211,7 @@ class ConsumerTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -220,15 +220,15 @@ class ConsumerTest extends TestCase
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
-        $this->expectException(ConsumerException::class);
+        $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
-            sprintf(ConsumerException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
+            sprintf(ProcessorException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
         );
         $this->consumer->rollback($event);
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -237,9 +237,9 @@ class ConsumerTest extends TestCase
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"));
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
-        $this->expectException(ConsumerException::class);
+        $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
-            sprintf(ConsumerException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
+            sprintf(ProcessorException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
         );
         $this->consumer->rollback($event);
     }

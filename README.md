@@ -291,7 +291,7 @@ class TaskApp
     }
 
     /**
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException

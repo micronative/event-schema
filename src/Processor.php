@@ -9,7 +9,7 @@ use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
 use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
-use Micronative\EventSchema\Exceptions\ConsumerException;
+use Micronative\EventSchema\Exceptions\ProcessorException;
 use Micronative\EventSchema\Json\JsonReader;
 use Micronative\EventSchema\Service\RollbackInterface;
 use Micronative\EventSchema\Service\ServiceFactory;
@@ -54,7 +54,7 @@ class Processor implements ProcessorInterface
      * @param \Micronative\EventSchema\Event\AbstractEvent|null $event
      * @param array|null $filteredEvents
      * @return bool
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -83,7 +83,7 @@ class Processor implements ProcessorInterface
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      * @param array|null $filteredEvents
      * @return bool
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ServiceException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
@@ -122,32 +122,32 @@ class Processor implements ProcessorInterface
     /**
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      * @param array|null $filteredEvents
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
     private function checkFilteredEvents(AbstractEvent $event, ?array $filteredEvents = null)
     {
         if(empty($event->getName())){
-            throw new ConsumerException(ConsumerException::EMPTY_EVENT_NAME);
+            throw new ProcessorException(ProcessorException::EMPTY_EVENT_NAME);
         }
 
         if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
-            throw new ConsumerException(ConsumerException::FILTERED_EVENT_ONLY . JsonReader::encode($filteredEvents));
+            throw new ProcessorException(ProcessorException::FILTERED_EVENT_ONLY . JsonReader::encode($filteredEvents));
         }
     }
 
     /**
      * @param \Micronative\EventSchema\Event\AbstractEvent $event
      * @return string[]
-     * @throws \Micronative\EventSchema\Exceptions\ConsumerException
+     * @throws \Micronative\EventSchema\Exceptions\ProcessorException
      */
     private function retrieveServiceClasses(AbstractEvent $event)
     {
         /** @var \Micronative\EventSchema\Config\Consumer\EventConfig $eventConfig */
         $eventConfig = $this->eventConfigRegister->retrieveEventConfig($event->getName(), $event->getVersion());
         if (empty($eventConfig)) {
-            throw new ConsumerException(
-                sprintf(ConsumerException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
+            throw new ProcessorException(
+                sprintf(ProcessorException::NO_REGISTER_EVENTS, $event->getName(), $event->getVersion())
             );
         }
 
@@ -156,8 +156,8 @@ class Processor implements ProcessorInterface
          */
         $event->setSchemaFile($eventConfig->getSchemaFile());
         if (empty($serviceClasses = $eventConfig->getServiceClasses())) {
-            throw new ConsumerException(
-                sprintf(ConsumerException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
+            throw new ProcessorException(
+                sprintf(ProcessorException::NO_REGISTER_SERVICES, $event->getName(), $event->getVersion())
             );
         }
 

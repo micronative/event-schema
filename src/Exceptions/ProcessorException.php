@@ -2,7 +2,7 @@
 
 namespace Micronative\EventSchema\Exceptions;
 
-class ConsumerException extends ServiceSchemaException
+class ProcessorException extends ServiceSchemaException
 {
     const FAILED_TO_CREATE_MESSAGE = "Failed to create message from json string: ";
     const EMPTY_EVENT_NAME = "Event name is empty.";
