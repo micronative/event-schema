@@ -8,8 +8,12 @@ class TaskEvent extends AbstractEvent
 {
     private \DateTime $receivedAt;
 
-    public function __construct(?string $name = null, ?string $version = null, ?string $id = null, ?array $payload = null)
-    {
+    public function __construct(
+        ?string $name = null,
+        ?string $version = null,
+        ?string $id = null,
+        ?array $payload = null
+    ) {
         $this->name = $name;
         $this->version = $version;
         $this->id = $id;
@@ -42,9 +46,9 @@ class TaskEvent extends AbstractEvent
     public function fromJson(string $jsonString)
     {
         $data = json_decode($jsonString, true);
-        $this->name = isset($data['name']) ? $data['name'] : null;
-        $this->id = isset($data['id']) ? $data['id'] : null;
-        $this->payload = isset($data['payload']) ? (array)$data['payload'] : null;
+        $this->name = $data['name'] ?? null;
+        $this->id = $data['id'] ?? null;
+        $this->payload = $data['payload'] ?? null;
 
         return $this;
     }
