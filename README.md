@@ -55,12 +55,13 @@ listening to these events and use Micronative\EventSchema\Consumer to process th
 namespace Samples\UserService;
 
 use Micronative\EventSchema\Validator;
-use Samples\UserService\Entities\User;
 use Micronative\MockBroker\Broker;
 use Micronative\MockBroker\Publisher;
+use Samples\UserService\Entities\User;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+
 
 class UserApp
 {
