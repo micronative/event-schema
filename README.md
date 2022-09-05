@@ -54,8 +54,8 @@ listening to these events and use Micronative\EventSchema\Consumer to process th
 
 namespace Samples\UserService;
 
-use Micronative\EventSchema\Producer;
-use Samples\MessageBroker\MockBroker;
+use Micronative\EventSchema\Validator;
+use Samples\MessageBroker\Broker;
 use Samples\UserService\Broadcast\MockPublisher;
 use Samples\UserService\Entities\User;
 use Samples\UserService\Events\UserEventSubscriber;
@@ -68,14 +68,14 @@ class UserApp
 
     /**
      * UserApp constructor.
-     * @param \Samples\MessageBroker\MockBroker|null $broker
+     * @param \Samples\MessageBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public function __construct(MockBroker $broker = null)
+    public function __construct(Broker $broker = null)
     {
         $eventSubscriber = new UserEventSubscriber(
-            new Producer(dirname(__FILE__), ["/assets/configs/events.yml"]),
+            new Validator(dirname(__FILE__), ["/assets/configs/events.yml"]),
             new MockPublisher($broker)
         );
         $eventDispatcher = new EventDispatcher();
@@ -160,16 +160,16 @@ class UserRepository
 
 namespace Samples\UserService\Events;
 
-use Micronative\EventSchema\ProducerInterface;
+use Micronative\EventSchema\ValidatorInterface;
 use Samples\UserService\Broadcast\PublisherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
-    private ProducerInterface $producer;
+    private ValidatorInterface $producer;
     private PublisherInterface $publisher;
 
-    public function __construct(ProducerInterface $producer, PublisherInterface $publisher)
+    public function __construct(ValidatorInterface $producer, PublisherInterface $publisher)
     {
         $this->producer = $producer;
         $this->publisher = $publisher;
@@ -259,7 +259,7 @@ class TaskApp
 
     /**
      * App constructor.
-     * @param \Samples\MessageBroker\MockBroker|null $broker
+     * @param \Samples\MessageBroker\Broker|null $broker
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */

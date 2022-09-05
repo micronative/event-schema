@@ -4,7 +4,7 @@ namespace Micronative\EventSchema;
 
 use Micronative\EventSchema\Event\AbstractEvent;
 
-interface ProducerInterface
+interface ValidatorInterface
 {
     /**
      * @param \Micronative\EventSchema\Event\AbstractEvent $event

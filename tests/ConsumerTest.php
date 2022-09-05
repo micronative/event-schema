@@ -4,7 +4,7 @@ namespace Tests;
 
 use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Config\Consumer\ServiceConfigRegister;
-use Micronative\EventSchema\Consumer;
+use Micronative\EventSchema\Processor;
 use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\ConsumerException;
@@ -16,8 +16,8 @@ use Tests\Event\SampleEvent;
 
 class ConsumerTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\EventSchema\Consumer */
-    protected Consumer $consumer;
+    /** @coversDefaultClass \Micronative\EventSchema\Processor */
+    protected Processor $consumer;
     protected string $testDir;
 
     /**
@@ -28,7 +28,7 @@ class ConsumerTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(__FILE__);
-        $this->consumer = new Consumer(
+        $this->consumer = new Processor(
             $this->testDir,
             ["/assets/consumer/configs/events.yml", "/assets/consumer/configs/events.json"],
             ["/assets/consumer/configs/services.yml", "/assets/consumer/configs/services.json"],

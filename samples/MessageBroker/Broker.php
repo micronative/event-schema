@@ -5,7 +5,7 @@ namespace Samples\MessageBroker;
 use Micronative\FileCache\CacheItem;
 use Micronative\FileCache\CachePool;
 
-class MockBroker
+class Broker
 {
     private string $storageDir;
     private string $storageName = 'broker.messages.storage';
@@ -13,11 +13,13 @@ class MockBroker
     private array $messages = [];
 
     /**
-     * MockBroker constructor.
+     * Broker constructor.
+     * @param string $storageDir
      * @throws \Micronative\FileCache\Exceptions\CachePoolException
      */
-    public function __construct(){
-        $this->storageDir = dirname(__FILE__).'/storage';
+    public function __construct(string $storageDir)
+    {
+        $this->storageDir = $storageDir;
         $this->cachePool = new CachePool($this->storageDir);
         $this->loadMessages();
     }
@@ -33,9 +35,10 @@ class MockBroker
     /**
      * @throws \Micronative\FileCache\Exceptions\CachePoolException
      */
-    private function loadMessages(){
+    private function loadMessages()
+    {
         $item = $this->cachePool->getItem($this->storageName);
-        if(!empty($item->get())) {
+        if (!empty($item->get())) {
             $this->messages = $item->get();
         }
     }
@@ -43,7 +46,8 @@ class MockBroker
     /**
      * @throws \Micronative\FileCache\Exceptions\CachePoolException
      */
-    private function saveMessages(){
+    private function saveMessages()
+    {
         $data = ['key' => $this->storageName, 'value' => $this->messages];
         $item = new CacheItem($data);
         $this->cachePool->save($item)->commit();
@@ -51,18 +55,31 @@ class MockBroker
 
     /**
      * @param string $message
+     * @param string $topic
+     * @return bool
      */
-    public function push(string $message)
+    public function push(string $message, string $topic)
     {
-        array_push($this->messages, $message);
+        $this->messages[$topic][] = $message;
+
+        return true;
     }
 
     /**
-     * @return string
+     * @param string $topic
+     * @return null
      */
-    public function shift()
+    public function pull(string $topic)
     {
-        return array_shift($this->messages);
+        if (!isset($this->messages[$topic])) {
+            return null;
+        }
+
+        $messages = $this->messages[$topic];
+        $message = array_shift($messages);
+        $this->messages[$topic] = $messages;
+
+        return $message;
     }
 
     /**
@@ -75,9 +92,9 @@ class MockBroker
 
     /**
      * @param string[] $messages
-     * @return \Samples\MessageBroker\MockBroker
+     * @return \Samples\MessageBroker\Broker
      */
-    public function setMessages(array $messages): MockBroker
+    public function setMessages(array $messages): Broker
     {
         $this->messages = $messages;
 
@@ -94,9 +111,9 @@ class MockBroker
 
     /**
      * @param string $storageDir
-     * @return \Samples\MessageBroker\MockBroker
+     * @return \Samples\MessageBroker\Broker
      */
-    public function setStorageDir(string $storageDir): MockBroker
+    public function setStorageDir(string $storageDir): Broker
     {
         $this->storageDir = $storageDir;
 

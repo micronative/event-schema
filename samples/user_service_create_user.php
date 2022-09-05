@@ -2,11 +2,11 @@
 
 require_once('./vendor/autoload.php');
 
-use Samples\MessageBroker\MockBroker;
+use Samples\MessageBroker\Broker;
 use Samples\UserService\UserApp;
 
 try {
-    $broker = new MockBroker();
+    $broker = new Broker(dirname(__FILE__) . '/MessageBroker/storage');
     $userApp = new UserApp($broker);
     $userApp->createUser('Ken', 'ken@bc.com');
 } catch (Exception $e) {

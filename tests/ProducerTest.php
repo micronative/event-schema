@@ -4,14 +4,14 @@ namespace Tests;
 
 use Micronative\EventSchema\Exceptions\ValidatorException;
 use Micronative\EventSchema\Json\JsonReader;
-use Micronative\EventSchema\Producer;
+use Micronative\EventSchema\Validator;
 use PHPUnit\Framework\TestCase;
 use Tests\Event\SampleEvent;
 
 class ProducerTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\EventSchema\Producer */
-    protected Producer $producer;
+    /** @coversDefaultClass \Micronative\EventSchema\Validator */
+    protected Validator $producer;
     protected string $testDir;
 
 
@@ -19,7 +19,7 @@ class ProducerTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(__FILE__);
-        $this->producer = new Producer(
+        $this->producer = new Validator(
             $this->testDir,
             ["/assets/producer/configs/events.yml"]
         );

@@ -2,13 +2,13 @@
 
 namespace Micronative\EventSchema;
 
-use JsonSchema\Validator;
+use JsonSchema\Validator as JsonValidator;
 use Micronative\EventSchema\Command\EventValidateCommand;
 use Micronative\EventSchema\Config\Consumer\EventConfigRegister;
 use Micronative\EventSchema\Event\AbstractEvent;
 use Micronative\EventSchema\Event\EventValidator;
 
-class Producer implements ProducerInterface
+class Validator implements ValidatorInterface
 {
     protected EventConfigRegister $eventConfigRegister;
     protected EventValidator $eventValidator;
@@ -26,7 +26,7 @@ class Producer implements ProducerInterface
     {
         $this->assetDir = $assetDir;
         $this->eventConfigRegister = new EventConfigRegister($this->assetDir, $eventConfigs);
-        $this->eventValidator = new EventValidator($this->assetDir, new Validator());
+        $this->eventValidator = new EventValidator($this->assetDir, new JsonValidator());
         $this->loadConfigs();
     }
 
@@ -77,9 +77,9 @@ class Producer implements ProducerInterface
 
     /**
      * @param string|null $assetDir
-     * @return \Micronative\EventSchema\Producer
+     * @return \Micronative\EventSchema\Validator
      */
-    public function setAssetDir(?string $assetDir): Producer
+    public function setAssetDir(?string $assetDir): Validator
     {
         $this->assetDir = $assetDir;
 

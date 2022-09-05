@@ -11,7 +11,7 @@ abstract class AbstractEvent
 
     /**
      * @var string|null relative path (from Processor::schemaDir) to json schema file
-     * @see \Micronative\EventSchema\Consumer::assetDir
+     * @see \Micronative\EventSchema\Processor::assetDir
      */
     protected ?string $schemaFile = null;
 
