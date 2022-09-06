@@ -35,7 +35,7 @@ The codes under [samples](./samples) is a mock microservice architecture:
 - two microservices: [UserService](./samples/UserService) and [TaskService](./samples/TaskService)
 
 In this sample, UserService is a producer and TaskService is a consumer. When a User created or updated on UserService, 
-it will use Micronative\EventSchema\Producer to validate the event then publish it to MessageBroker. TaskService is 
+it will use Micronative\EventSchema\Validator to validate the event then publish it to MessageBroker. TaskService is 
 listening to these events and use Micronative\EventSchema\Consumer to process the incoming events.
 
 ### Producer configs:
