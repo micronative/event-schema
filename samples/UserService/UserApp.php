@@ -23,7 +23,7 @@ class UserApp
     public function __construct(Broker $broker = null)
     {
         $eventSubscriber = new UserEventSubscriber(
-            new Validator(dirname(__FILE__), ["/assets/configs/events.yml"]),
+            new Validator(dirname(__FILE__), ["/assets/configs/out_events.yml"]),
             new Publisher($broker)
         );
         $eventDispatcher = new EventDispatcher();

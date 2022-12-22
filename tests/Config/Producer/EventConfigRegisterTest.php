@@ -20,8 +20,8 @@ class EventConfigRegisterTest extends TestCase
         $this->eventConfigRegister = new EventConfigRegister(
             $this->testDir,
             [
-                "/assets/producer/configs/events.yml",
-                "/assets/producer/configs/events.json"
+                "/assets/producer/configs/out_events.yml",
+                "/assets/producer/configs/out_events.json"
             ]
         );
     }

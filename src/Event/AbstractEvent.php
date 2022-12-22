@@ -41,7 +41,7 @@ abstract class AbstractEvent implements JsonTransformerInterface
      * @return \Micronative\EventSchema\Event\AbstractEvent
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    abstract public function fromJson(string $jsonString);
+    abstract public function fromJson(string $jsonString): AbstractEvent;
     /**
      * {
      *   $data = json_decode($jsonString, true);

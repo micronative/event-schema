@@ -21,7 +21,7 @@ class ProducerTest extends TestCase
         $this->testDir = dirname(__FILE__);
         $this->producer = new Validator(
             $this->testDir,
-            ["/assets/producer/configs/events.yml"]
+            ["/assets/producer/configs/out_events.yml"]
         );
     }
 

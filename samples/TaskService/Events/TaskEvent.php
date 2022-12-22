@@ -43,7 +43,7 @@ class TaskEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Samples\TaskService\Events\TaskEvent
      */
-    public function fromJson(string $jsonString)
+    public function fromJson(string $jsonString): AbstractEvent
     {
         $data = json_decode($jsonString, true);
         $this->name = $data['name'] ?? null;

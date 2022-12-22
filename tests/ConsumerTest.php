@@ -29,7 +29,7 @@ class ConsumerTest extends TestCase
         $this->testDir = dirname(__FILE__);
         $this->consumer = new Processor(
             $this->testDir,
-            ["/assets/consumer/configs/events.yml", "/assets/consumer/configs/events.json"],
+            ["/assets/consumer/configs/in_events.yml", "/assets/consumer/configs/in_events.json"],
             ["/assets/consumer/configs/services.yml", "/assets/consumer/configs/services.json"],
         );
     }

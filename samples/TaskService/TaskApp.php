@@ -26,7 +26,7 @@ class TaskApp
         $container = new Container();
         $this->processor = new Processor(
             dirname(__FILE__),
-            ["/assets/configs/events.yml"],
+            ["/assets/configs/in_events.yml"],
             ["/assets/configs/services.yml"],
             $container
         );

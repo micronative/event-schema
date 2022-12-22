@@ -1,18 +1,9 @@
 {
-  "name": "Users.Created",
-  "id": "65564e71-4876-48e7-885a-4c8a33970ab0",
-  "time": "20190726032212",
-  "status": "New",
-  "payload": {
-    "user": {
-      "data": {
-        "name": "Ken"
-      }
-    },
-    "account": {
-      "data": {
-        "name": "Brighte"
-      }
-    }
-  }
+  "name":"User.Created",
+  "id":"5e8e44a0-2552-4acc-9964-f5ca07948486",
+  "payload":{
+    "name":"Ken",
+    "email":"ken@bc.com"
+  },
+  "created_at":"2022-09-05 03:37:54"
 }

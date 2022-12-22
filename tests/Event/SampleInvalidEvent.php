@@ -25,7 +25,7 @@ class SampleInvalidEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Tests\Event\SampleInvalidEvent
      */
-    public function fromJson(string $jsonString)
+    public function fromJson(string $jsonString): AbstractEvent
     {
         $data = json_decode($jsonString, true);
         $this->name = isset($data['name']) ? $data['name'] : null;

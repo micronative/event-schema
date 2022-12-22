@@ -6,7 +6,12 @@
       "minLength": 0,
       "maxLength": 256
     },
-    "time": {
+    "id": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 256
+    },
+    "created": {
       "type": "string",
       "minLength": 0,
       "maxLength": 256
@@ -14,36 +19,26 @@
     "payload": {
       "type": "object",
       "properties": {
-        "user": {
-          "type": "object",
-          "properties": {
-            "data": {
-              "type": "object"
-            },
-            "class": {
-              "type": "string",
-              "default": "\\App\\Entity\\User"
-            }
-          }
+        "name": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
         },
-        "account": {
-          "type": "object",
-          "properties": {
-            "data": {
-              "type": "object"
-            },
-            "class": {
-              "type": "string",
-              "default": "\\App\\Entity\\Account"
-            }
-          }
+        "email": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        },
+        "class": {
+          "type": "string",
+          "default": "\\App\\Entity\\User"
         }
       },
       "required": [
-        "user",
-        "account"
+        "name",
+        "email"
       ],
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
   "required": [
