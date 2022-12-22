@@ -47,7 +47,7 @@ class UserEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Samples\UserService\Events\UserEvent
      */
-    public function fromJson(string $jsonString)
+    public function fromJson(string $jsonString): UserEvent
     {
         $data = json_decode($jsonString, true);
         $this->name = $data['name'] ?? null;

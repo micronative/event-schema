@@ -2,7 +2,7 @@
 
 namespace Micronative\EventSchema\Event;
 
-abstract class AbstractEvent
+abstract class AbstractEvent implements JsonTransformerInterface
 {
     protected ?string $name = null;
     protected ?string $version = null;
