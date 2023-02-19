@@ -1,8 +1,8 @@
 {
   "name": "micronative/event-schema",
-  "description": "Event Schema for Microservice",
+  "description": "Event Schema for Microservices",
   "keywords": [
-    "Microservice",
+    "Microservices",
     "Event",
     "Service",
     "Schema"

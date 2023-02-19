@@ -30,7 +30,7 @@ composer require micronative/event-schema:1.0.0
 
 ## Sample code
 
-The codes under [samples](./samples) is a mock microservice architecture:
+The code under [samples](./samples) is a mock microservice architecture:
 - a [MessageBroker](./samples/MessageBroker)
 - two microservices: [UserService](./samples/UserService) and [TaskService](./samples/TaskService)
 
