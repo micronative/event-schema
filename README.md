@@ -16,7 +16,7 @@ Event-schema is a tool to validate and process messages from a broker or between
 ## Configuration
 <pre>
 "require": {
-        "micronative/event-schema": "^1.0.0"
+        "micronative/event-schema": "^1.0.1"
 },
 "repositories": [
     { "type": "vcs", "url": "https://github.com/micronative/event-schema" }
@@ -25,7 +25,7 @@ Event-schema is a tool to validate and process messages from a broker or between
 
 Run
 <pre>
-composer require micronative/event-schema:1.0.0
+composer require micronative/event-schema:1.0.1
 </pre>
 
 ## Sample code
