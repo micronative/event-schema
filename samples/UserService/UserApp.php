@@ -33,10 +33,10 @@ class UserApp
 
     /**
      * @param string $name
-     * @param string $email
+     * @param string|null $email
      * @throws \Exception
      */
-    public function createUser(string $name, string $email)
+    public function createUser(string $name, ?string $email = null)
     {
         $this->userRepository->save(new User($name, $email));
     }

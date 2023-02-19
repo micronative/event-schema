@@ -28,7 +28,7 @@ class UserRepository
     {
         // save user then dispatch event
         $this->eventDispatcher->dispatch(
-            new UserEvent(UserEvent::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            new UserEvent(UserEvent::USER_CREATED, UserEvent::VERSION, Uuid::uuid4()->toString(), $user->toArray()),
             UserEvent::USER_CREATED
         );
     }
@@ -41,7 +41,7 @@ class UserRepository
     {
         // update user then dispatch event
         $this->eventDispatcher->dispatch(
-            new UserEvent(UserEvent::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            new UserEvent(UserEvent::USER_UPDATED, UserEvent::VERSION, Uuid::uuid4()->toString(), $user->toArray()),
             UserEvent::USER_UPDATED
         );
     }

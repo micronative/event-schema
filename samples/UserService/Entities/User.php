@@ -5,9 +5,9 @@ namespace Samples\UserService\Entities;
 class User
 {
     private string $name;
-    private string $email;
+    private ?string $email;
 
-    public function __construct(string $name, string $email)
+    public function __construct(string $name, ?string $email = null)
     {
         $this->name = $name;
         $this->email = $email;

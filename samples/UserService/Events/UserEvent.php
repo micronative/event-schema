@@ -9,6 +9,7 @@ class UserEvent extends AbstractEvent
     const USER_EVENT_TOPIC = 'User.Events';
     const USER_CREATED = 'User.Created';
     const USER_UPDATED = 'User.Updated';
+    const VERSION = "1.0.0";
 
     private \DateTime $createdAt;
 
