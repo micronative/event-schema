@@ -16,7 +16,6 @@ class EventValidateCommandTest extends TestCase
     /** @coversDefaultClass \Micronative\EventSchema\Command\EventValidateCommand */
     private EventValidateCommand $command;
     private EventValidator $validator;
-    private ServiceInterface $service;
     private AbstractEvent $event;
 
     public function setUp(): void
@@ -53,7 +52,7 @@ class EventValidateCommandTest extends TestCase
         $this->event->setSchemaFile("/assets/consumer/schemas/CreateContact.json");
         $this->command = new EventValidateCommand($this->validator, $this->event, true);
         $this->expectException(ValidatorException::class);
-        $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
+        $this->expectExceptionMessageMatches('%' . sprintf(ValidatorException::INVALIDATED_EVENT, $this->event->getName()) . '%');
         $this->command->execute();
     }
 }

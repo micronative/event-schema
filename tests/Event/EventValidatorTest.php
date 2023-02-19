@@ -54,7 +54,7 @@ class EventValidatorTest extends TestCase
         $event = new SampleEvent("SomeName");
         $event->setSchemaFile("/assets/producer/schemas/User.Created.schema.json");
         $this->expectException(ValidatorException::class);
-        $this->expectExceptionMessageMatches("%" . ValidatorException::INVALIDATED_EVENT . "%");
+        $this->expectExceptionMessageMatches("%" . sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()) . "%");
         $this->validator->validateEvent($event);
     }
 

@@ -56,7 +56,7 @@ class EventValidator
 
         if (!$this->validator->isValid()) {
             throw new ValidatorException(
-                ValidatorException::INVALIDATED_EVENT . JsonReader::encode($this->validator->getErrors())
+                sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()) . JsonReader::encode($this->validator->getErrors())
             );
         }
 

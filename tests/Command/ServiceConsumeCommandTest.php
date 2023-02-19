@@ -49,7 +49,7 @@ class ServiceConsumeCommandTest extends TestCase
         $this->event->setSchemaFile("/assets/consumer/schemas/CreateContact.json");
         $this->command = new ServiceConsumeCommand($this->validator, $this->service, $this->event);
         $this->expectException(ValidatorException::class);
-        $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
+        $this->expectExceptionMessageMatches('%' . sprintf(ValidatorException::INVALIDATED_EVENT, $this->event->getName()) . '%');
         $this->command->execute();
     }
 }

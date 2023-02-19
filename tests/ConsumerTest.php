@@ -62,7 +62,7 @@ class ConsumerTest extends TestCase
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ValidatorException::class);
-        $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
+        $this->expectExceptionMessageMatches('%' . sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()) . '%');
         $this->consumer->process($event);
     }
 
@@ -175,7 +175,7 @@ class ConsumerTest extends TestCase
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ValidatorException::class);
-        $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
+        $this->expectExceptionMessageMatches('%' . sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()). '%');
         $this->consumer->rollback($event);
     }
 
