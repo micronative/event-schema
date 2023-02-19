@@ -28,19 +28,21 @@ class UserEventSubscriber implements EventSubscriberInterface
 
     public function onUserCreated(UserEvent $userEvent)
     {
+        echo "-- Validating outgoing event message: {$userEvent->getName()}" . PHP_EOL;
         if ($this->validator->validate($userEvent, true)) {
-            echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            echo "-- Start publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
             $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
-            echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            echo "-- Finish publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
         }
     }
 
     public function onUserUpdated(UserEvent $userEvent)
     {
+        echo "-- Validating outgoing event message: {$userEvent->getName()}" . PHP_EOL;
         if ($this->validator->validate($userEvent, true)) {
-            echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            echo "-- Start publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
             $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
-            echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            echo "-- Finish publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
         }
     }
 }

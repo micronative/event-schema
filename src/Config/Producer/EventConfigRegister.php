@@ -16,8 +16,8 @@ class EventConfigRegister extends AbstractEventConfigRegister
                 continue;
             }
             $name = $event['event'];
-            $version = isset($event['version']) ? $event['version'] : null;
-            $schemaFile = isset($event['schema']) ? $event['schema'] : null;
+            $version = $event['version'] ?? null;
+            $schemaFile = $event['schema'] ?? null;
             $eventConfig = new EventConfig($name, $version, $schemaFile);
             $this->registerEventConfig($eventConfig);
         }
