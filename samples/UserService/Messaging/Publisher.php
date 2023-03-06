@@ -9,6 +9,11 @@ class Publisher implements PublisherInterface
 {
     private ValidatorInterface $validator;
     private MockPublisherInterface $publisher;
+
+    /**
+     * @param MockPublisherInterface $publisher
+     * @param ValidatorInterface|null $validator
+     */
     public function __construct(MockPublisherInterface $publisher, ValidatorInterface $validator = null)
     {
         $this->validator = $validator;
