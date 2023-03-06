@@ -56,12 +56,12 @@ namespace Samples\UserService;
 
 use Micronative\EventSchema\Validator;
 use Micronative\MockBroker\Broker;
-use Micronative\MockBroker\Publisher;
+use Micronative\MockBroker\Publisher as MockPublisher;
+use Samples\UserService\Messaging\Publisher;
 use Samples\UserService\Entities\User;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
 
 class UserApp
 {
@@ -76,8 +76,9 @@ class UserApp
     public function __construct(Broker $broker = null)
     {
         $eventSubscriber = new UserEventSubscriber(
-            new Validator(dirname(__FILE__), ["/assets/configs/events.yml"]),
-            new Publisher($broker)
+            new Publisher(
+                new MockPublisher($broker),
+                new Validator(dirname(__FILE__), ["/assets/configs/out_events.yml"]))
         );
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($eventSubscriber);
@@ -86,10 +87,10 @@ class UserApp
 
     /**
      * @param string $name
-     * @param string $email
+     * @param string|null $email
      * @throws \Exception
      */
-    public function createUser(string $name, string $email)
+    public function createUser(string $name, ?string $email = null)
     {
         $this->userRepository->save(new User($name, $email));
     }
@@ -98,8 +99,9 @@ class UserApp
      * @param \Samples\UserService\Entities\User $user
      * @throws \Exception
      */
-    public function updateUser(User $user)
+    public function updateUser(User $user, string $name, string $email)
     {
+        $user->setName($name)->setEmail($email);
         $this->userRepository->update($user);
     }
 }
@@ -138,7 +140,7 @@ class UserRepository
     {
         // save user then dispatch event
         $this->eventDispatcher->dispatch(
-            new UserEvent(UserEvent::USER_CREATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            new UserEvent(UserEvent::USER_CREATED, UserEvent::VERSION, Uuid::uuid4()->toString(), $user->toArray()),
             UserEvent::USER_CREATED
         );
     }
@@ -151,7 +153,7 @@ class UserRepository
     {
         // update user then dispatch event
         $this->eventDispatcher->dispatch(
-            new UserEvent(UserEvent::USER_UPDATED, null, Uuid::uuid4()->toString(), $user->toArray()),
+            new UserEvent(UserEvent::USER_UPDATED, UserEvent::VERSION, Uuid::uuid4()->toString(), $user->toArray()),
             UserEvent::USER_UPDATED
         );
     }
@@ -164,19 +166,15 @@ class UserRepository
 
 namespace Samples\UserService\Events;
 
-use Micronative\EventSchema\ValidatorInterface;
-use Micronative\MockBroker\PublisherInterface;
+use Samples\UserService\Messaging\Publisher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
+    private Publisher $publisher;
 
-    private ValidatorInterface $validator;
-    private PublisherInterface $publisher;
-
-    public function __construct(ValidatorInterface $validator, PublisherInterface $publisher)
+    public function __construct(Publisher $publisher)
     {
-        $this->validator = $validator;
         $this->publisher = $publisher;
     }
 
@@ -190,25 +188,47 @@ class UserEventSubscriber implements EventSubscriberInterface
 
     public function onUserCreated(UserEvent $userEvent)
     {
-        if ($this->validator->validate($userEvent, true)) {
-            echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
-            $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
-            echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
-        }
+        $this->publisher->publishEvent($userEvent);
     }
 
     public function onUserUpdated(UserEvent $userEvent)
     {
+        $this->publisher->publishEvent($userEvent);
+    }
+}
+```
+@see: [Samples\UserService\Events\UserEventSubscriber](samples/UserService/Events/UserEventSubscriber.php)
+
+```php
+<?php
+
+namespace Samples\UserService\Messaging;
+use Micronative\EventSchema\ValidatorInterface;
+use Samples\UserService\Events\UserEvent;
+use Micronative\MockBroker\PublisherInterface as MockPublisherInterface;
+
+class Publisher implements PublisherInterface
+{
+    private ValidatorInterface $validator;
+    private MockPublisherInterface $publisher;
+    public function __construct(MockPublisherInterface $publisher, ValidatorInterface $validator = null)
+    {
+        $this->validator = $validator;
+        $this->publisher = $publisher;
+    }
+
+    public function publishEvent(UserEvent $userEvent)
+    {
+        echo "-- Validating outgoing event message: {$userEvent->getName()}" . PHP_EOL;
         if ($this->validator->validate($userEvent, true)) {
-            echo "-- Start publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            echo "-- Start publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
             $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
-            echo "-- Finish publishing event to broker: {$userEvent->getName()}" . PHP_EOL;
+            echo "-- Finish publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
         }
     }
 }
-
 ```
-@see: [Samples\UserService\Events\UserEventSubscriber](samples/UserService/Events/UserEventSubscriber.php)
+@see: [Samples\UserService\Events\Messaging\Publisher](samples/UserService/Messaging/Publisher.php)
 
 ### Consumer configs
 ```yaml
