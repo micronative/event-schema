@@ -4,7 +4,8 @@ namespace Samples\UserService;
 
 use Micronative\EventSchema\Validator;
 use Micronative\MockBroker\Broker;
-use Micronative\MockBroker\Publisher;
+use Micronative\MockBroker\Publisher as MockPublisher;
+use Samples\UserService\Messaging\Publisher;
 use Samples\UserService\Entities\User;
 use Samples\UserService\Events\UserEventSubscriber;
 use Samples\UserService\Repositories\UserRepository;
@@ -23,8 +24,9 @@ class UserApp
     public function __construct(Broker $broker = null)
     {
         $eventSubscriber = new UserEventSubscriber(
-            new Validator(dirname(__FILE__), ["/assets/configs/out_events.yml"]),
-            new Publisher($broker)
+            new Publisher(
+                new MockPublisher($broker),
+                new Validator(dirname(__FILE__), ["/assets/configs/out_events.yml"]))
         );
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($eventSubscriber);
@@ -45,8 +47,9 @@ class UserApp
      * @param \Samples\UserService\Entities\User $user
      * @throws \Exception
      */
-    public function updateUser(User $user)
+    public function updateUser(User $user, string $name, string $email)
     {
+        $user->setName($name)->setEmail($email);
         $this->userRepository->update($user);
     }
 }

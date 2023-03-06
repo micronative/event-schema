@@ -2,19 +2,15 @@
 
 namespace Samples\UserService\Events;
 
-use Micronative\EventSchema\ValidatorInterface;
-use Micronative\MockBroker\PublisherInterface;
+use Samples\UserService\Messaging\Publisher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
+    private Publisher $publisher;
 
-    private ValidatorInterface $validator;
-    private PublisherInterface $publisher;
-
-    public function __construct(ValidatorInterface $validator, PublisherInterface $publisher)
+    public function __construct(Publisher $publisher)
     {
-        $this->validator = $validator;
         $this->publisher = $publisher;
     }
 
@@ -28,21 +24,11 @@ class UserEventSubscriber implements EventSubscriberInterface
 
     public function onUserCreated(UserEvent $userEvent)
     {
-        echo "-- Validating outgoing event message: {$userEvent->getName()}" . PHP_EOL;
-        if ($this->validator->validate($userEvent, true)) {
-            echo "-- Start publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
-            $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
-            echo "-- Finish publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
-        }
+        $this->publisher->publishEvent($userEvent);
     }
 
     public function onUserUpdated(UserEvent $userEvent)
     {
-        echo "-- Validating outgoing event message: {$userEvent->getName()}" . PHP_EOL;
-        if ($this->validator->validate($userEvent, true)) {
-            echo "-- Start publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
-            $this->publisher->publish($userEvent->toJson(), UserEvent::USER_EVENT_TOPIC);
-            echo "-- Finish publishing event message to broker: {$userEvent->getName()}" . PHP_EOL;
-        }
+        $this->publisher->publishEvent($userEvent);
     }
 }

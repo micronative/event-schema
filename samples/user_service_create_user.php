@@ -8,7 +8,7 @@ use Samples\UserService\UserApp;
 try {
     $broker = new Broker(dirname(__FILE__) . '/MessageBroker/storage');
     $userApp = new UserApp($broker);
-    $userApp->createUser('Ken', 'ken@bc.com');
+    $userApp->createUser('Ken', 'ken@elmo.com');
 } catch (Exception $e) {
     echo $e->getMessage();
 }

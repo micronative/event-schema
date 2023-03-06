@@ -43,9 +43,9 @@ class TaskApp
         $message = $this->consumer->consume(self::USER_EVENT_TOPIC);
         if (!empty($message)) {
             $taskEvent = (new TaskEvent())->fromJson($message);
-            echo "-- Start processing event: {$taskEvent->getName()}" . PHP_EOL;
+            echo "-- Start processing incoming event: {$taskEvent->getName()}" . PHP_EOL;
             $this->processor->process($taskEvent);
-            echo "-- Finish processing event: {$taskEvent->getName()}" . PHP_EOL;
+            echo "-- Finish processing incoming event: {$taskEvent->getName()}" . PHP_EOL;
         }
     }
 }

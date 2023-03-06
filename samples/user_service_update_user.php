@@ -9,8 +9,8 @@ use Samples\UserService\UserApp;
 try {
     $broker = new Broker(dirname(__FILE__) . '/MessageBroker/storage');
     $userApp = new UserApp($broker);
-    $user = new User('John', 'John@bc.com');
-    $userApp->updateUser($user);
+    $user = new User('John', 'John@elmo.com');
+    $userApp->updateUser($user, 'New John', 'new.jonh@elmo.com');
 } catch (Exception $e) {
     echo $e->getMessage();
 }
