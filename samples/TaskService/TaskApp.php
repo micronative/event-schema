@@ -6,6 +6,7 @@ use Micronative\EventSchema\Processor;
 use Micronative\MockBroker\Broker;
 use Micronative\MockBroker\Consumer;
 use Micronative\MockBroker\ConsumerInterface;
+use Psr\Container\ContainerInterface;
 use Samples\TaskService\Events\TaskEvent;
 
 class TaskApp
@@ -17,13 +18,13 @@ class TaskApp
     /**
      * App constructor.
      * @param \Micronative\MockBroker\Broker|null $broker
+     * @param \Psr\Container\ContainerInterface|null $container
      * @throws \Micronative\EventSchema\Exceptions\ConfigException
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public function __construct(Broker $broker = null)
+    public function __construct(Broker $broker = null, ContainerInterface $container = null)
     {
         $this->consumer = new Consumer($broker);
-        $container = new Container();
         $this->processor = new Processor(
             dirname(__FILE__),
             ["/assets/configs/in_events.yml"],
