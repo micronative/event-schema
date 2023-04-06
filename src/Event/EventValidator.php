@@ -23,7 +23,7 @@ class EventValidator
     public function __construct(string $schemaDir = null, Validator $validator = null)
     {
         $this->schemaDir = $schemaDir;
-        $this->validator = $validator ?? new  Validator();
+        $this->validator = $validator ?? new Validator();
     }
 
     /**
@@ -56,7 +56,8 @@ class EventValidator
 
         if (!$this->validator->isValid()) {
             throw new ValidatorException(
-                sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()) . JsonReader::encode($this->validator->getErrors())
+                sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()) .
+                JsonReader::encode($this->validator->getErrors())
             );
         }
 

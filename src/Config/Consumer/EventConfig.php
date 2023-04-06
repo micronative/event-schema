@@ -15,7 +15,12 @@ class EventConfig extends AbstractEventConfig
      * @param string|null $schemaFile
      * @param array|null $services
      */
-    public function __construct(string $name, ?string $version = null, ?string $schemaFile = null, ?array $services = null)
+    public function __construct(
+        string  $name,
+        ?string $version = null,
+        ?string $schemaFile = null,
+        ?array  $services = null
+    )
     {
         $this->name = $name;
         $this->version = $version;
