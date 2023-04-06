@@ -45,7 +45,7 @@ class JsonReaderTest extends TestCase
     public function testDecodeFailed()
     {
         $this->expectException(JsonException::class);
-        JsonReader::decode(null);
+        JsonReader::decode(null, false);
     }
 
     /**
