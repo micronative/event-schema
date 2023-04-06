@@ -37,7 +37,7 @@ class Validator implements ValidatorInterface
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function validate(AbstractEvent $event, ?bool $applyDefaultValues = false)
+    public function validate(AbstractEvent $event, ?bool $applyDefaultValues)
     {
         /**
          * If event has no schema then try with schema from config

@@ -20,7 +20,7 @@ class EventValidateCommand implements CommandInterface
     public function __construct(
         EventValidator $validator,
         AbstractEvent $event,
-        bool $applyDefaultValues = false
+        bool $applyDefaultValues
     ) {
         $this->eventValidator = $validator;
         $this->event = $event;

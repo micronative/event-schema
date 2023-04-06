@@ -33,7 +33,7 @@ class EventValidator
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function validateEvent(AbstractEvent $event, bool $applyDefaultValues = false)
+    public function validateEvent(AbstractEvent $event, bool $applyDefaultValues)
     {
         if (empty($schemaFile = $event->getSchemaFile())) {
             return true;

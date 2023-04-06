@@ -12,5 +12,5 @@ interface ValidatorInterface
      * @return true
      * @throws \Micronative\EventSchema\Exceptions\ValidatorException
      */
-    public function validate(AbstractEvent $event, bool $applyDefaultValues = false);
+    public function validate(AbstractEvent $event, bool $applyDefaultValues);
 }
