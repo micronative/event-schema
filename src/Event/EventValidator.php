@@ -39,7 +39,7 @@ class EventValidator
             return true;
         }
 
-        if (empty($jsonObject = JsonReader::decode($event->toJson()))) {
+        if (empty($jsonObject = JsonReader::decode($event->toJson(), false))) {
             throw new ValidatorException(ValidatorException::INVALID_JSON);
         }
 
@@ -47,7 +47,7 @@ class EventValidator
             $schemaFile = $this->schemaDir . $schemaFile;
         }
 
-        if (empty($jsonSchema = JsonReader::decode(JsonReader::read($schemaFile)))) {
+        if (empty($jsonSchema = JsonReader::decode(JsonReader::read($schemaFile), false))) {
             throw new ValidatorException(ValidatorException::INVALID_SCHEMA);
         }
 

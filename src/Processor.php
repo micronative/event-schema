@@ -177,14 +177,10 @@ class Processor implements ProcessorInterface
     private function runService(
         AbstractEvent $event,
         ServiceInterface $service,
-        array $callbacks,
-        bool $return
+        array $callbacks
     ) {
         $consumeCommand = new ServiceConsumeCommand($this->eventValidator, $service, $event);
         $result = $consumeCommand->execute();
-        if ($return === true) {
-            return $result;
-        }
 
         if (($result instanceof AbstractEvent) && !empty($callbacks)) {
             return $this->runCallbacks($result, $callbacks);

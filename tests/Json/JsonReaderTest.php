@@ -68,7 +68,7 @@ class JsonReaderTest extends TestCase
     {
         $file = $this->testDir . "/assets/files/read.json";
         $json = JsonReader::read($file);
-        $object = JsonReader::decode($json);
+        $object = JsonReader::decode($json, false);
 
         $this->assertTrue(is_object($object));
         $this->assertEquals("Users.afterSaveCommit.Create", $object->event);

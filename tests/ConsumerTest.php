@@ -43,7 +43,8 @@ class ConsumerTest extends TestCase
     public function testProcess()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json"),
+            false
         );
         $event = new SampleEvent('User.Created', null, $data->id, (array)$data->payload);
         $result = $this->consumer->process($event);
@@ -58,7 +59,8 @@ class ConsumerTest extends TestCase
     public function testProcessFailed()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.Failed.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.Failed.event.json"),
+            false
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ValidatorException::class);
@@ -75,7 +77,8 @@ class ConsumerTest extends TestCase
     public function testProcessWithFilteredEvent()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $this->expectException(ProcessorException::class);
@@ -91,7 +94,7 @@ class ConsumerTest extends TestCase
      */
     public function testProcessWithNoneRegisteredEvent()
     {
-        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"));
+        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"), false);
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
@@ -108,7 +111,7 @@ class ConsumerTest extends TestCase
      */
     public function testProcessWithEmptyServiceEvent()
     {
-        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
+        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"), false);
         $event = new SampleEvent('Empty.Service.Event', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
@@ -126,7 +129,8 @@ class ConsumerTest extends TestCase
     public function testProcessWithNoneExistingServiceEvent()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/None.Existing.Service.Event.json")
+            JsonReader::read($this->testDir . "/assets/events/None.Existing.Service.Event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->consumer->process($event));
@@ -141,7 +145,8 @@ class ConsumerTest extends TestCase
     public function testProcessWithInvalidServiceClass()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json")
+            JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json"),
+            false
         );
         $event = new SampleEvent('Invalid.Service.Class.Event', null, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->consumer->process($event));
@@ -156,7 +161,8 @@ class ConsumerTest extends TestCase
     public function testRollback()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json"),
+            false
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $result = $this->consumer->rollback($event);
@@ -171,7 +177,8 @@ class ConsumerTest extends TestCase
     public function testRollbackWithInvalidValidation()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.Failed.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.Failed.event.json"),
+            false
         );
         $event = new SampleEvent('User.Created', null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ValidatorException::class);
@@ -188,7 +195,8 @@ class ConsumerTest extends TestCase
     public function testRollbackWithInvalidServiceClass()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json")
+            JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->consumer->rollback($event));
@@ -203,7 +211,8 @@ class ConsumerTest extends TestCase
     public function testRollbackWithNoneExistingServiceEvent()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/None.Existing.Service.Event.json")
+            JsonReader::read($this->testDir . "/assets/events/None.Existing.Service.Event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->consumer->rollback($event));
@@ -217,7 +226,7 @@ class ConsumerTest extends TestCase
      */
     public function testRollbackWithEmptyServiceEvent()
     {
-        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
+        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"), false);
         $event = new SampleEvent($data->name, null, $data->id ?? null, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(
@@ -234,7 +243,7 @@ class ConsumerTest extends TestCase
      */
     public function testRollbackWithNoneRegisteredEvent()
     {
-        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"));
+        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"), false);
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(

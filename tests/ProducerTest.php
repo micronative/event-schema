@@ -32,7 +32,8 @@ class ProducerTest extends TestCase
     public function testValidate()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $event->setSchemaFile("/assets/producer/schemas/User.Created.schema.json");
@@ -47,7 +48,8 @@ class ProducerTest extends TestCase
     public function testValidateEventWithNoSchema()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $validated = $this->producer->validate($event, true);
@@ -61,7 +63,8 @@ class ProducerTest extends TestCase
     public function testValidateThrowsException()
     {
         $data = JsonReader::decode(
-            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json")
+            JsonReader::read($this->testDir . "/assets/events/Users.Created.event.json"),
+            false
         );
         $event = new SampleEvent($data->name, null, $data->id, (array)$data->payload);
         $event->setSchemaFile("/assets/producer/schemas/Task.Created.schema.json");
