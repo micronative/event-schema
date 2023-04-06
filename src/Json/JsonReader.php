@@ -31,7 +31,7 @@ class JsonReader implements JsonReaderInterface
      * @return array|\stdClass
      * @throws \Micronative\EventSchema\Exceptions\JsonException
      */
-    public static function decode(string $json, bool $assoc)
+    public static function decode(?string $json, ?bool $assoc)
     {
         if (empty($json)) {
             throw new JsonException(JsonException::MISSING_JSON_CONTENT);
