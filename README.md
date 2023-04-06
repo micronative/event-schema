@@ -1,15 +1,16 @@
 # Event-Schema
 [![Software license][ico-license]](README.md)
-[![Build status][ico-travis]][link-travis]
+[![Build][ico-build-7.4]][link-build]
+[![Build][ico-build-8.0]][link-build]
 [![Coverage][ico-codecov]][link-codecov]
 
-
 [ico-license]: https://img.shields.io/github/license/nrk/predis.svg?style=flat-square
-[ico-travis]: https://travis-ci.com/micronative/event-schema.svg?branch=master
+[ico-build-7.4]: https://github.com/micronative/event-schema/actions/workflows/php-7.4.yml/badge.svg
+[ico-build-8.0]: https://github.com/micronative/event-schema/actions/workflows/php-8.0.yml/badge.svg
 [ico-codecov]: https://codecov.io/gh/micronative/event-schema/branch/master/graph/badge.svg
 
-[link-codecov]: https://codecov.io/gh/micronative/event-schema
-[link-travis]: https://travis-ci.com/github/micronative/event-schema
+[link-build]: https://github.com/micronative/event-schema/actions
+[link-codecov]: https://codecov.io/gh/micronative/mock-server
 
 Event-schema is a tool to validate and process messages from a broker or between microservices.
 
