@@ -1,0 +1,1 @@
+{"key":"broker.messages.storage","hitCount":0,"cacheTime":1680744996,"expiresAt":null,"expiresAfter":3600,"value":{"User.Events":["{\"name\":\"User.Updated\",\"version\":\"1.0.0\",\"id\":\"c83ff35a-a231-433e-8b25-f0ace779730e\",\"payload\":{\"name\":\"New John\",\"email\":\"new.jonh@elmo.com\"},\"created_at\":\"2023-04-06 01:33:06\"}"]}}

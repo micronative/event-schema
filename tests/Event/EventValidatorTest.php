@@ -7,6 +7,7 @@ use Micronative\EventSchema\Event\EventValidator;
 use Micronative\EventSchema\Exceptions\JsonException;
 use Micronative\EventSchema\Exceptions\ValidatorException;
 use PHPUnit\Framework\TestCase;
+use function SebastianBergmann\CodeCoverage\TestFixture\f;
 
 class EventValidatorTest extends TestCase
 {
@@ -31,7 +32,7 @@ class EventValidatorTest extends TestCase
         $event->setSchemaFile("/assets/schemas/events/User.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessage(ValidatorException::INVALID_JSON);
-        $this->validator->validateEvent($event);
+        $this->validator->validateEvent($event, false);
     }
 
     /**
@@ -43,7 +44,7 @@ class EventValidatorTest extends TestCase
         $event->setSchemaFile("/assets/producer/schemas/InvalidSchema.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessage(ValidatorException::INVALID_SCHEMA);
-        $this->validator->validateEvent($event);
+        $this->validator->validateEvent($event, false);
     }
 
     /**
@@ -55,7 +56,7 @@ class EventValidatorTest extends TestCase
         $event->setSchemaFile("/assets/producer/schemas/User.Created.schema.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches("%" . sprintf(ValidatorException::INVALIDATED_EVENT, $event->getName()) . "%");
-        $this->validator->validateEvent($event);
+        $this->validator->validateEvent($event, false);
     }
 
     /**
@@ -67,7 +68,7 @@ class EventValidatorTest extends TestCase
         $event->setSchemaFile("/assets/producer/schemas/NoneExistingSchema.json");
         $this->expectException(JsonException::class);
         $this->expectExceptionMessageMatches("%" . JsonException::INVALID_JSON_FILE . "%");
-        $this->validator->validateEvent($event);
+        $this->validator->validateEvent($event, false);
     }
 
     /**
